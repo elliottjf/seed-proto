@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>{+title /}</title>
+
+  <link rel="stylesheet" href="/css/app.css">
+
+</head>
+<body>
+<a href="/">home</a> &nbsp;
+<a href="/p">vote</a> &nbsp;
+<a href="/how_it_works">how it works</a> &nbsp;
+<a href="/who_we_are">who we are</a> &nbsp;
+- &nbsp;
+
+  {#user}
+    {email} &nbsp;
+  <a href="/logout">logout</a>
+  {:else}
+  <a href="/login">login</a> &nbsp;
+  <a href="/signup">signup</a>
+  {/user}
+
+<br/>
+
+<h3>Seed.Coop</h3>
+
+<div id="wrapper">
+  {+body /}
+</div>
+
+
+<script data-main="/js/app" src="/components/requirejs/require.js"></script>
+
+</body>
+</html>

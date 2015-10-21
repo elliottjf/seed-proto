@@ -1,0 +1,16 @@
+{>"layouts/master" /}
+
+{<body}
+  <h3>Vote Detail</h3>
+
+  {#item}
+    id: {_id}<br/>
+    Proposal: {proposal}<br/>
+    Supporter: {supporter}<br/>
+    Vote Rank: {voteRank}<br/>
+    Contribution Pledge: {contributionPledge}<br>
+    Patronage Pledge: {patronagePledge}<br>
+    Worker Interest: {workerInterest}<br>
+  {/item}
+
+{/body}

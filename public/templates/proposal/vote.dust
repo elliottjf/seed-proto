@@ -1,0 +1,27 @@
+{>"layouts/master" /}
+
+{<body}
+  <h3>Proposal Vote</h3>
+
+  {#proposal}
+    id: {_id}<br/>
+    title: {title}<br/>
+    summary: {summary}<br/>
+
+    <fieldset>
+      <form method="post" action="/p/vote">
+        <input type="hidden" name="proposalId" value="{_id}"><br>
+        {#item}
+          Vote Rank: <input type="text" name="voteRank"><br>
+          Contribution Pledge: <input type="text" name="contributionPledge"><br>
+          Patronage Pledge: <input type="text" name="patronagePledge"><br>
+          Worker Interest: <input type="text" name="workerInterest"><br>
+        {/item}
+        <input type="hidden" name="_csrf" value="{_csrf}">
+        <input type="submit" value="Save">
+      </form>
+    </fieldset>
+
+  {/proposal}
+
+{/body}

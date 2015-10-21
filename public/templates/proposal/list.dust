@@ -1,0 +1,21 @@
+{>"layouts/master" /}
+
+{<body}
+  <h3>Proposals</h3>
+
+  <table>
+    {#items}
+      <tr>
+        <td>
+          <a href="/p/view?id={_id}">{title}</a>
+        </td>
+        <td>
+          <a href="/p/vote?id={_id}">[vote]</a>
+        </td>
+      </tr>
+    {/items}
+  </table>
+
+  <br/>
+  <a href="/p/edit">create new</a><br/>
+{/body}

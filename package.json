@@ -1,0 +1,51 @@
+{
+  "name": "seed-proto",
+  "version": "0.1.0",
+  "description": "seed bomb prototype w/ kraken",
+  "author": "Joseph Elliott",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test",
+    "build": "grunt build",
+    "all": "npm run build && npm run test"
+  },
+  "dependencies": {
+    "adaro": "^0.1.10",
+    "bcrypt": "^0.8.5",
+    "bluebird": "^2.10.2",
+    "connect-flash": "^0.1.1",
+    "construx": "^1.0.0",
+    "construx-copier": "^1.0.0",
+    "construx-dustjs-i18n": "^1.0.1",
+    "construx-less": "^1.0.0",
+    "dustjs-helpers": "~1.6.3",
+    "dustjs-linkedin": "~2.6.2",
+    "engine-munger": "^0.2.8",
+    "express": "^4.12.2",
+    "express-promise-router": "0.0.9",
+    "kraken-js": "^1.0.3",
+    "lodash": "^3.10.1",
+    "longjohn": "^0.2.9",
+    "machinepack-gravatar": "^1.2.0",
+    "machinepack-passwords": "^2.3.0",
+    "mongoose": "~3.8.8",
+    "passport": "^0.2.0",
+    "passport-local": "^1.0.0",
+    "requirejs": "^2.1.20",
+    "shortid": "^2.2.2"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-config-dir": "^0.3.2",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-less": "^1.0.1",
+    "grunt-contrib-requirejs": "^0.4.4",
+    "grunt-copy-to": "0.0.10",
+    "grunt-dustjs": "^1.2.1",
+    "grunt-mocha-cli": "^1.14.0",
+    "mocha": "^1.18.0",
+    "supertest": "^0.9.0"
+  }
+}

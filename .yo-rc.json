@@ -1,0 +1,13 @@
+{
+  "generator-kraken": {
+    "taskModule": "grunt",
+    "description": "seed bomb prototype w/ kraken",
+    "author": "Joseph Elliott",
+    "templateModule": "dustjs",
+    "i18n": false,
+    "componentPackager": false,
+    "cssModule": "less",
+    "jsModule": "requirejs",
+    "useJson": null
+  }
+}

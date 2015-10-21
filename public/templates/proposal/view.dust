@@ -1,0 +1,35 @@
+{>"layouts/master" /}
+
+{<body}
+  <h3>Proposal Detail</h3>
+
+  {#item}
+    id: {_id}<br/>
+    title: {title}<br/>
+    summary: {summary}<br/>
+    <br/>
+    <a href="/p/vote?id={_id}">[vote]</a>
+  {/item}
+
+  <br/>
+  <br/>
+  <br/>
+  Votes:<br/>
+  <table>
+    <th>Vote Rank</th><th>Contribution Pledge</th><th>Patronage Pledge</th>
+  {#votes}
+    <tr>
+      <td>
+        {voteRank}
+      </td>
+      <td>
+        {contributionPledge}
+      </td>
+      <td>
+        {patronagePledge}
+      </td>
+    </tr>
+  {/votes}
+  </table>
+
+{/body}

@@ -1,0 +1,7 @@
+{>"layouts/master" /}
+
+{<body}
+  <h1>Internal server error</h1>
+  <p>The URL <code>{url}</code> had the following error <code>{err}</code>.</p>
+  <pre>{err.stack}</pre>
+{/body}

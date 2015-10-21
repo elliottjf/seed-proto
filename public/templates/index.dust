@@ -1,0 +1,13 @@
+{>"layouts/master" /}
+
+{<body}
+  <div class="row">
+    <div>
+      <h4>
+        Capitalizing the Cooperative Economy
+      </h4>
+    </div>
+
+  </div>
+
+{/body}

@@ -1,0 +1,46 @@
+{>"layouts/master" /}
+
+{<body}
+  <div>
+    <form id="loginForm" method="post">
+      <fieldset>
+        <h2>Login</h2>
+        {!<legend>Login</legend>!}
+
+        {?messages}
+          <ul>
+            {#messages}
+              <li>{.}</li>
+            {/messages}
+          </ul>
+        {/messages}
+
+        <form method="POST" action="/p/edit">
+          {!Email: <input name="username"><br>!}
+          {!Password: <input name="password" type="password"><br>!}
+          {!<input type="hidden" name="_csrf" value="{_csrf}">!}
+          {!<input type="submit" value="Login">!}
+
+          <table>
+            <tr>
+              <td><label for="username">Email: </label></td>
+              <td><input id="username" name="username" type="text"/></td>
+            </tr>
+            <tr>
+              <td><label for="password">Password: </label></td>
+              <td><input id="password" name="password" type="password"/></td>
+            </tr>
+            <tr>
+              <td>
+                <input type="submit" value="Login"/>
+                <input type="hidden" name="_csrf" value="{_csrf}"/>
+              </td>
+              <td></td>
+            </tr>
+          </table>
+
+        </form>
+      </fieldset>
+    </form>
+  </div>
+{/body}
