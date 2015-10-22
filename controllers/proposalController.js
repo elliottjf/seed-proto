@@ -8,9 +8,7 @@ var helpers = require('../lib/helpers');
 var curriedHandleError = _.curry(helpers.handleError);
 
 
-module.exports = {
-
-  list: function (req, res) {
+  function list(req, res) {
     Proposal.find().exec()
       .then(function (items) {
         console.log("inside find callback");
@@ -20,9 +18,9 @@ module.exports = {
         res.render('proposal/list', model);
       })
       .catch( curriedHandleError(req, res) );
-  },
+  }
 
-  view: function (req, res) {
+   function view(req, res) {
     var id = req.param('id');
     var proposal;
     Proposal.findOne({_id: id}).exec()
@@ -38,15 +36,15 @@ module.exports = {
         res.render('proposal/view', model);
       })
       .catch( curriedHandleError(req, res) );
-  },
+  }
 
-  showEdit: function (req, res) {
+   function showEdit(req, res) {
     //todo: edit existing record
     var model = {item: {}};
     res.render('proposal/edit', model);
-  },
+  }
 
-  postEdit: function (req, res) {
+   function postEdit(req, res) {
     console.log("body.title: " + req.body.title);
     var title = req.body.title && req.body.title.trim();
     var summary = req.body.summary && req.body.summary.trim();
@@ -64,10 +62,10 @@ module.exports = {
         res.redirect('/p');
       })
       .catch( curriedHandleError(req, res) );
-  },
+  }
 
 
-  showVote: function (req, res) {
+   function showVote(req, res) {
     var id = req.param('pid');
     Proposal.findOne({_id: id}).exec()
       .then(function (proposal) {
@@ -77,9 +75,9 @@ module.exports = {
         res.render('proposal/vote', model);
       })
       .catch( curriedHandleError(req, res) );
-  },
+  }
 
-  postVote: function (req, res) {
+   function postVote(req, res) {
     if (! req.user) {
       console.error("post vote - not logged in");
       throw new Error("post vote - not logged in");
@@ -109,9 +107,9 @@ module.exports = {
         }
       })
       .catch( curriedHandleError(req, res) );
-  },
+  }
 
-  voteView: function(req, res) {
+   function voteView(req, res) {
     console.log("root index.js - vote/view");
     //var model = {item: {id:1,title:"the first proposal"}};
     //res.render('proposal/view', model);
@@ -122,7 +120,18 @@ module.exports = {
         res.render('vote/view', model);
       })
       .catch( curriedHandleError(req, res) );
-  },
+  }
 
+function addRoutes(router) {
+  router.get('/p', list);
+  router.get('/p/view', view);
+  router.get('/p/edit', showEdit);
+  router.post('/p/edit', postEdit);
+  router.get('/p/vote', showVote);
+  router.post('/p/vote', postVote);
+  router.get('/vote/view', voteView);
+}
 
+module.exports = {
+  addRoutes: addRoutes
 }
