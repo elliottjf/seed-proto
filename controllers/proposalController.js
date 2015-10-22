@@ -2,19 +2,15 @@
 
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
-var Proposal = require('../../models/proposal');
-var Vote = require('../../models/vote');
-var helpers = require('../../lib/helpers');
+var Proposal = require('../models/proposal');
+var Vote = require('../models/vote');
+var helpers = require('../lib/helpers');
+var handleError = helpers.handleError;
 
 
-function handleError(err) {
-  console.error(err);
-  return helpers.negotiate(req, res, err);
-}
+module.exports = {
 
-module.exports = function (router) {
-
-  router.get('/', function (req, res) {
+  list: function (req, res) {
     Proposal.find().exec()
       .then(function (items) {
         console.log("inside find callback");
@@ -24,10 +20,9 @@ module.exports = function (router) {
         res.render('proposal/list', model);
       })
       .catch(handleError)
-  });
+  },
 
-
-  router.get('/view', function (req, res) {
+  view: function (req, res) {
     var id = req.param('id');
     var proposal;
     Proposal.findOne({_id: id}).exec()
@@ -43,14 +38,14 @@ module.exports = function (router) {
         res.render('proposal/view', model);
       })
       .catch(handleError)
-  });
+  },
 
-  router.get('/edit', function (req, res) {
+  showEdit: function (req, res) {
     var model = {item: {id: 1, title: "the first proposal"}};
     res.render('proposal/edit', model);
-  });
+  },
 
-  router.post('/edit', function (req, res) {
+  postEdit: function (req, res) {
     console.log("inside post /edit");
     console.log("body.title: " + req.body.title);
     var title = req.body.title && req.body.title.trim();
@@ -72,10 +67,10 @@ module.exports = function (router) {
         res.redirect('/p');
       })
       .catch(handleError)
-  });
+  },
 
 
-  router.get('/vote', function (req, res) {
+  showVote: function (req, res) {
     var id = req.param('id');
     Proposal.findOne({_id: id}).exec()
       .then(function (proposal) {
@@ -85,9 +80,9 @@ module.exports = function (router) {
         res.render('proposal/vote', model);
       })
       .catch(handleError)
-  });
+  },
 
-  router.post('/vote', function (req, res) {
+  postVote: function (req, res) {
     if (! req.user) {
       console.error("post vote - not logged in");
       throw new Error("post vote - not logged in");
@@ -112,6 +107,20 @@ module.exports = function (router) {
         res.redirect('/vote/view?id=' + newItem._id);
       })
       .catch(handleError)
-  });
+  },
 
-};
+  voteView: function(req, res) {
+    console.log("root index.js - vote/view");
+    //var model = {item: {id:1,title:"the first proposal"}};
+    //res.render('proposal/view', model);
+    var id = req.param('id');
+    Vote.findOne({_id: id}).exec()
+      .then(function(item) {
+        var model = { item: item };
+        res.render('vote/view', model);
+      })
+      .catch(handleError)
+  },
+
+
+}
