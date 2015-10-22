@@ -1,11 +1,11 @@
 'use strict';
 
+var _ = require('lodash');
 var mongoose = require('mongoose');
-mongoose.Promise = require('bluebird');
 var Proposal = require('../models/proposal');
 var Vote = require('../models/vote');
 var helpers = require('../lib/helpers');
-var handleError = helpers.handleError;
+var curriedHandleError = _.curry(helpers.handleError);
 
 
 module.exports = {
@@ -19,7 +19,7 @@ module.exports = {
         };
         res.render('proposal/list', model);
       })
-      .catch(handleError)
+      .catch( curriedHandleError(req, res) );
   },
 
   view: function (req, res) {
@@ -37,16 +37,16 @@ module.exports = {
         };
         res.render('proposal/view', model);
       })
-      .catch(handleError)
+      .catch( curriedHandleError(req, res) );
   },
 
   showEdit: function (req, res) {
-    var model = {item: {id: 1, title: "the first proposal"}};
+    //todo: edit existing record
+    var model = {item: {}};
     res.render('proposal/edit', model);
   },
 
   postEdit: function (req, res) {
-    console.log("inside post /edit");
     console.log("body.title: " + req.body.title);
     var title = req.body.title && req.body.title.trim();
     var summary = req.body.summary && req.body.summary.trim();
@@ -57,21 +57,18 @@ module.exports = {
     //    return;
     //}
 
-    console.log("before new proposal");
     var item = new Proposal({title: title, summary: summary});
-    console.log("after new proposal");
-
     console.log("item: " + item.whatAmI());
     item.save()
       .then(function() {
         res.redirect('/p');
       })
-      .catch(handleError)
+      .catch( curriedHandleError(req, res) );
   },
 
 
   showVote: function (req, res) {
-    var id = req.param('id');
+    var id = req.param('pid');
     Proposal.findOne({_id: id}).exec()
       .then(function (proposal) {
         var model = {proposal: proposal, item: {}};
@@ -79,7 +76,7 @@ module.exports = {
         model.messages = req.flash('error');
         res.render('proposal/vote', model);
       })
-      .catch(handleError)
+      .catch( curriedHandleError(req, res) );
   },
 
   postVote: function (req, res) {
@@ -89,8 +86,8 @@ module.exports = {
     }
     var model = {};
     model.voteRank = req.param('voteRank');
-    model.contributionPledge = req.param('contributionPledge');
-    model.patronagePledge = req.param('patronagePledge');
+    model.anticipatedCapital = req.param('anticipatedCapital');
+    model.anticipatedPatronage = req.param('anticipatedPatronage');
     model.workerInterest = req.param('workerInterest');
     var proposalId = req.param('proposalId');
 //    var _id = new mongoose.Types.ObjectId(proposalId);
@@ -104,9 +101,14 @@ module.exports = {
       .then(function(newItem) {
         console.log("new vote id: " + newItem._id + ", obj: " + newItem);
 //        res.redirect('/p/view?id=' + proposalId);
-        res.redirect('/vote/view?id=' + newItem._id);
+        if (! req.user) {
+          console.error("post vote - need to bind supporter");
+          res.redirect('/signup?vid=' + item._id);
+        } else {
+          res.redirect('/vote/view?id=' + newItem._id);
+        }
       })
-      .catch(handleError)
+      .catch( curriedHandleError(req, res) );
   },
 
   voteView: function(req, res) {
@@ -119,7 +121,7 @@ module.exports = {
         var model = { item: item };
         res.render('vote/view', model);
       })
-      .catch(handleError)
+      .catch( curriedHandleError(req, res) );
   },
 
 

@@ -1,0 +1,26 @@
+{>"layouts/master" /}
+
+{<body}
+  <h3>Ready to Make a Pledge?</h3>
+
+  Proposal:<br/>
+  {#proposal}
+    id: {_id}<br/>
+    title: {title}<br/>
+    summary: {summary}<br/>
+
+    <fieldset>
+      <form method="post" action="/c/pledge">
+        <input type="hidden" name="proposalId" value="{_id}"><br>
+        {#item}
+          Pledged Capital Contribution: <input type="text" name="pledgedCapital"><br>
+          Pledged Customer Patronage: <input type="text" name="pledgedPatronage"><br>
+        {/item}
+        <input type="hidden" name="_csrf" value="{_csrf}">
+        <input type="submit" value="Pledge">
+      </form>
+    </fieldset>
+
+  {/proposal}
+
+{/body}

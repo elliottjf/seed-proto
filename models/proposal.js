@@ -12,10 +12,10 @@ mongoose.Promise = require('bluebird');
 var baseModel = require('./baseModel');
 
 
-var attributes = _.merge(baseModel.baseAttributes, {
+var attributes = _.merge({
   title: String,
   summary: String
-});
+}, baseModel.baseAttributes);
 
 var modelFactory = function () {
 

@@ -8,8 +8,8 @@
     Proposal: {proposal}<br/>
     Supporter: {supporter}<br/>
     Vote Rank: {voteRank}<br/>
-    Contribution Pledge: {contributionPledge}<br>
-    Patronage Pledge: {patronagePledge}<br>
+    Anticipated Capital Contribution: {anticipatedCapital}<br>
+    Anticipated Customer Patronage: {anticipatedPatronage}<br>
     Worker Interest: {workerInterest}<br>
   {/item}
 

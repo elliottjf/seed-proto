@@ -11,12 +11,19 @@ var _ = require('lodash');
 var mongoose = require('mongoose');
 var baseModel = require('./baseModel');
 
-var attributes = _.merge(baseModel.baseAttributes, {
+var attributes = _.merge({
   supporter: {type: mongoose.Schema.Types.ObjectId, ref: 'Profile'},
   proposal: {type: mongoose.Schema.Types.ObjectId, ref: 'Proposal'},
+  userId: String,
+  supporterId: String,
+  proposalId: String,
   description: String,
-  amount: Number,  //better fixed precision data type?
-});
+  //better fixed precision data type?
+  pledgedCapital: Number,
+  pledgedPatronage: Number,
+  paidCapital: Number,
+  paidPatronage: Number,
+}, baseModel.baseAttributes);
 
 var modelFactory = function () {
 

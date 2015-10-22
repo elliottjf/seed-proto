@@ -11,11 +11,11 @@ var crypto = require('../lib/crypto');
 var baseModel = require('./baseModel');
 
 
-var attributes = _.merge(baseModel.baseAttributes, {
+var attributes = _.merge({
   email: {type: String, unique: true},  //Ensure logins are unique.
   authenticationData: String, //We'll store bCrypt hashed passwords.
   role: String
-});
+}, baseModel.baseAttributes);
 
 var modelFactory = function () {
 

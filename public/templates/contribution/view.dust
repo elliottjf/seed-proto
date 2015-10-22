@@ -8,9 +8,9 @@
     title: {title}<br/>
     summary: {summary}<br/>
     <br/>
-    <a href="/p/vote?pid={_id}">[vote]</a> &nbsp;
-    <a href="/c/pledge?pid={_id}">[pledge]</a> &nbsp;
-    <a href="/c/contribute?pid={_id}">[contribute]</a>
+    <a href="/p/vote?id={_id}">[vote]</a> &nbsp;
+    <a href="/p/pledge?id={_id}">[pledge]</a> &nbsp;
+    <a href="/p/contribute?id={_id}">[contribute]</a>
 
   {/item}
 

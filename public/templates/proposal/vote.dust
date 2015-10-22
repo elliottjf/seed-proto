@@ -13,8 +13,8 @@
         <input type="hidden" name="proposalId" value="{_id}"><br>
         {#item}
           Vote Rank: <input type="text" name="voteRank"><br>
-          Contribution Pledge: <input type="text" name="contributionPledge"><br>
-          Patronage Pledge: <input type="text" name="patronagePledge"><br>
+          Anticipated Capital Contribution: <input type="text" name="anticipatedCapital"><br>
+          Anticipated Customer Patronage: <input type="text" name="anticipatedPatronage"><br>
           Worker Interest: <input type="text" name="workerInterest"><br>
         {/item}
         <input type="hidden" name="_csrf" value="{_csrf}">

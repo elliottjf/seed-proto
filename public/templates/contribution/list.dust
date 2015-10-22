@@ -10,7 +10,7 @@
           <a href="/p/view?id={_id}">{title}</a>
         </td>
         <td>
-          <a href="/p/vote?pid={_id}">[vote]</a>
+          <a href="/p/vote?id={_id}">[vote]</a>
         </td>
       </tr>
     {/items}

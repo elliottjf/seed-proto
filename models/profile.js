@@ -12,14 +12,14 @@ var _ = require('lodash');
 var mongoose = require('mongoose');
 var baseModel = require('./baseModel');
 
-var attributes = _.merge(baseModel.baseAttributes, {
+var attributes = _.merge({
   name: String,
   email: String,
   phone: String,
   address: String,
   about: String,
   taxId: String
-});
+}, baseModel.baseAttributes);
 
 var modelFactory = function () {
 

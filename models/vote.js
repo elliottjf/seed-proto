@@ -10,17 +10,20 @@ var _ = require('lodash');
 var mongoose = require('mongoose');
 var baseModel = require('./baseModel');
 
-var attributes = _.merge(baseModel.baseAttributes, {
+var attributes = _.merge({
+  //todo: figure out how to make mongoose relationships work with the short ids
   supporter: {type: mongoose.Schema.Types.ObjectId, ref: 'Profile'},
   proposal: {type: mongoose.Schema.Types.ObjectId, ref: 'Proposal'},
   userId: String,
   supporterId: String,
   proposalId: String,
   voteRank: Number,
-  contributionPledge: Number,
-  patronagePledge: Number,
+  anticipatedCapital: Number,
+  anticipatedPatronage: Number,
+  pledgedCapital: Number,
+  pledgedPatronage: Number,
   workerInterest: String,
-});
+}, baseModel.baseAttributes);
 
 var modelFactory = function () {
 

@@ -3,6 +3,7 @@
 
 var home = require('./homeController');
 var proposal = require('./proposalController');
+var contribution = require('./contributionController');
 
 
 
@@ -22,6 +23,7 @@ module.exports = function (router) {
   router.post('/login', home.postLogin);
   router.get('/signup', home.showSignup);
   router.post('/signup', home.postSignup);
+  router.get('/afterAuth', home.afterAuth);
   router.get('/logout', home.logout);
 
   router.get('/p', proposal.list);
@@ -32,5 +34,6 @@ module.exports = function (router) {
   router.post('/p/vote', proposal.postVote);
   router.get('/vote/view', proposal.voteView);
 
+  contribution.addRoutes(router);
 
 };
