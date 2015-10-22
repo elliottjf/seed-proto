@@ -1,5 +1,7 @@
 'use strict';
 
+var mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 var passport = require('passport');
 var IndexModel = require('../models/index');
 var LoginModel = require('../models/login');
@@ -7,6 +9,11 @@ var userLib = require('../lib/user')();
 var helpers = require('../lib/helpers');
 var Vote = require('../models/vote');
 
+
+function handleError(err) {
+  console.error(err);
+  return helpers.negotiate(req, res, err);
+}
 
 
 function passthrough(router, path) {
@@ -25,13 +32,6 @@ module.exports = function (router) {
     res.render('index', model);
   });
 
-  //todo: factor out generic rendered page
-  //router.get('/how_it_works', function (req, res) {
-  //    res.render('how_it_works', dummyModel);
-  //});
-  //router.get('/who_we_are', function (req, res) {
-  //    res.render('who_we_are', dummyModel);
-  //});
   passthrough(router, 'how_it_works');
   passthrough(router, 'who_we_are');
 
@@ -118,20 +118,12 @@ module.exports = function (router) {
     //var model = {item: {id:1,title:"the first proposal"}};
     //res.render('proposal/view', model);
     var id = req.param('id');
-    Vote.findOne({_id: id}, function (err, item) {
-      if (err) {
-        console.log(err);
-        res.render("errors/500", {err: err})
-      }
-      //items.forEach(function(item) {
-      //    item.prettyPrice = item.prettyPrice();
-      //});
-      var model = {
-        item: item
-      };
-      res.render('vote/view', model);
-    });
-
+    Vote.findOne({_id: id}).exec()
+      .then(function(item) {
+        var model = { item: item };
+        res.render('vote/view', model);
+      })
+      .catch(handleError)
   });
 
 

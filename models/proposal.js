@@ -8,6 +8,7 @@
 
 var _ = require('lodash');
 var mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 var baseModel = require('./baseModel');
 
 

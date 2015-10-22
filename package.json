@@ -28,7 +28,7 @@
     "longjohn": "^0.2.9",
     "machinepack-gravatar": "^1.2.0",
     "machinepack-passwords": "^2.3.0",
-    "mongoose": "~3.8.8",
+    "mongoose": "^4.1.12",
     "passport": "^0.2.0",
     "passport-local": "^1.0.0",
     "requirejs": "^2.1.20",

@@ -1,60 +1,48 @@
 'use strict';
 
 var mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 var Proposal = require('../../models/proposal');
 var Vote = require('../../models/vote');
 var helpers = require('../../lib/helpers');
 
 
+function handleError(err) {
+  console.error(err);
+  return helpers.negotiate(req, res, err);
+}
+
 module.exports = function (router) {
 
   router.get('/', function (req, res) {
-    try {
-      Proposal.find(function (err, items) {
+    Proposal.find().exec()
+      .then(function (items) {
         console.log("inside find callback");
-        if (err) {
-          console.log(err);
-          res.render("errors/500", {err: err})
-        } else {
-          //items.forEach(function(item) {
-          //    item.prettyPrice = item.prettyPrice();
-          //});
-          var model = {
-            items: items
-          };
-          res.render('proposal/list', model);
-        }
-      });
-    } catch (e) {
-      console.error("caught: " + e);
-      res.render("errors/500", {err: e})
-    }
-
+        var model = {
+          items: items
+        };
+        res.render('proposal/list', model);
+      })
+      .catch(handleError)
   });
 
 
   router.get('/view', function (req, res) {
-    //var model = {item: {id:1,title:"the first proposal"}};
-    //res.render('proposal/view', model);
     var id = req.param('id');
-    Proposal.findOne({_id: id}, function (err, item) {
-      if (err) {
-        console.log(err);
-        res.render("errors/500", {err: err})
-      }
-      //items.forEach(function(item) {
-      //    item.prettyPrice = item.prettyPrice();
-      //});
-      Vote.find({proposalId: item._id}, function (err, votes) {
+    var proposal;
+    Proposal.findOne({_id: id}).exec()
+      .then(function (item) {
+        proposal = item;
+        return Vote.find({proposalId: item._id});
+      })
+      .then(function (votes) {
         var model = {
-          item: item,
+          item: proposal,
           votes: votes
         };
         res.render('proposal/view', model);
-
       })
-    });
-
+      .catch(handleError)
   });
 
   router.get('/edit', function (req, res) {
@@ -78,41 +66,25 @@ module.exports = function (router) {
     var item = new Proposal({title: title, summary: summary});
     console.log("after new proposal");
 
-    //Show it in console for educational purposes...
-    item.whatAmI();
     console.log("item: " + item.whatAmI());
-    /* The call back recieves to more arguments ->product/s that is/are added to the database
-     and number of rows that are affected because of save, which right now are ignored
-     only errors object is consumed*/
-    item.save(function (err) {
-      if (err) {
-        console.log('save error', err);
-        res.render("errors/500", {err: e})
-
-      } else {
+    item.save()
+      .then(function() {
         res.redirect('/p');
-      }
-    });
-
-
+      })
+      .catch(handleError)
   });
 
 
   router.get('/vote', function (req, res) {
     var id = req.param('id');
-    Proposal.findOne({_id: id}, function (err, proposal) {
-      if (err) {
-        console.log(err);
-        res.render("errors/500", {err: err})
-      }
-      var model = {proposal: proposal, item: {} };
-      //Include any error messages that come from the login process.
-      model.messages = req.flash('error');
-      res.render('proposal/vote', model);
-
-    });
-
-
+    Proposal.findOne({_id: id}).exec()
+      .then(function (proposal) {
+        var model = {proposal: proposal, item: {}};
+        // todo: validation and error message handling
+        model.messages = req.flash('error');
+        res.render('proposal/vote', model);
+      })
+      .catch(handleError)
   });
 
   router.post('/vote', function (req, res) {
@@ -133,19 +105,13 @@ module.exports = function (router) {
     console.log("userId: " + req.user._id);
     model.userId = req.user._id;
 
-    Vote.create(model, function (err, newItem) {
-      if (err) {
-        console.error(err);
-        return helpers.negotiate(req, res, err);
-      } else {
+    Vote.create(model)
+      .then(function(newItem) {
         console.log("new vote id: " + newItem._id + ", obj: " + newItem);
 //        res.redirect('/p/view?id=' + proposalId);
         res.redirect('/vote/view?id=' + newItem._id);
-      }
-    });
+      })
+      .catch(handleError)
   });
-
-
-
 
 };

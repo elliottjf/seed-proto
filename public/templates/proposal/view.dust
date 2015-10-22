@@ -14,6 +14,7 @@
   <br/>
   <br/>
   <br/>
+  <fieldset>
   Votes:<br/>
   <table>
     <th>Vote Rank</th><th>Contribution Pledge</th><th>Patronage Pledge</th>
@@ -28,8 +29,12 @@
       <td>
         {patronagePledge}
       </td>
+      <td>
+        <a href="/vote/view?id={_id}">[view]</a>
+      </td>
     </tr>
   {/votes}
   </table>
+  </fieldset>
 
 {/body}
