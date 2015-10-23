@@ -1,0 +1,28 @@
+{>"layouts/master" /}
+
+{<body}
+  <h3>Pay By Credit Card</h3>
+
+  <b>About Credit Cards</b><br>
+  blah blah blah<br>
+  <br>
+
+  <form action="/c/paymentStripe" method="POST">
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="pk_test_nXchy2Bw65OZrUSnVH215bXr"
+            data-amount="{amountCents}"
+            data-name="Seed Coop"
+            data-description="Campaign: {proposalTitle}"
+            data-image="/128x128.png"
+            data-locale="auto">
+    </script>
+    <input type="hidden" name="amountCents" value="{amountCents}">
+    <input type="hidden" name="description" value="Seed Coop - Campaign: {proposalTitle}">
+    <input type="hidden" name="_csrf" value="{_csrf}">
+  </form>
+
+  <br>
+  <a href="/c/payment">[back]</a>
+
+
+{/body}

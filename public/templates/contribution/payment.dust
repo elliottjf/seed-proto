@@ -1,0 +1,24 @@
+{>"layouts/master" /}
+
+{<body}
+  <h3>Ways to Pay</h3>
+
+  <fieldset>
+    <form method="post" action="/c/payment">
+      <input type="hidden" name="contributionId" value="{contributionId}"><br>
+      Capital contribution in support of: {proposalTitle}<br/>
+      Amount: <b>${capital}</b><br>
+      <br>
+      Pay By:<br>
+      <input type="radio" name="paymentMethod" value="Dwolla">Dwolla (E-Check)<br>
+      <input type="radio" name="paymentMethod" value="Check">Check / Other E-Check<br>
+      <input type="radio" name="paymentMethod" value="Stripe">Credit Card<br>
+      <input type="radio" name="paymentMethod" value="Bitcoin">Bitcoin<br>
+      <input type="hidden" name="_csrf" value="{_csrf}">
+      <!--todo: make this client-side dynamic -->
+      <input type="submit" value="Next">
+    </form>
+  </fieldset>
+
+
+{/body}

@@ -1,0 +1,12 @@
+{>"layouts/master" /}
+
+{<body}
+  <h3>Thanks for your Contribution!</h3>
+
+  blah blah blah<br>
+  <br>
+  <a href="/p">Back to Proposals</a>
+
+
+
+{/body}

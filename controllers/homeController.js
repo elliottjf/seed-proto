@@ -4,6 +4,7 @@ var mongoose = require('mongoose')
 var passport = require('passport')
 var userLib = require('../lib/user')()
 var helpers = require('../lib/helpers')
+var passthrough = helpers.passthrough
 
 var contributionController = require('./contributionController')
 var proposalController = require('./proposalController')
@@ -125,11 +126,11 @@ function logout(req, res) {
   res.redirect('/')
 }
 
-function passthrough(router, path) {
-  router.get('/' + path, function (req, res) {
-    res.render(path, {});
-  });
-}
+//function passthrough(router, path) {
+//  router.get('/' + path, function (req, res) {
+//    res.render(path, {});
+//  });
+//}
 
 
 function addRoutes(router) {

@@ -13,6 +13,7 @@
     "adaro": "^0.1.10",
     "bcrypt": "^0.8.5",
     "bluebird": "^2.10.2",
+    "circular-json": "^0.2.0",
     "connect-flash": "^0.1.1",
     "construx": "^1.0.0",
     "construx-copier": "^1.0.0",
@@ -32,7 +33,8 @@
     "passport": "^0.2.0",
     "passport-local": "^1.0.0",
     "requirejs": "^2.1.20",
-    "shortid": "^2.2.2"
+    "shortid": "^2.2.2",
+    "stripe": "^4.0.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

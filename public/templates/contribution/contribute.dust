@@ -15,12 +15,13 @@
 
     <fieldset>
       <form method="post" action="/c/contribute">
-        <input type="hidden" name="proposalId" value="{_id}"><br>
-        {#item}
+        <input type="hidden" name="proposalId" value="{_id}">
+        <input type="hidden" name="proposalTitle" value="{title}">
+        {#contribution}
           <input type="hidden" name="contributionId" value="{_id}"><br>
           Pledged Capital Contribution: {pledgedCapital}<br>
           Pledged Customer Patronage: {pledgedPatronage}<br>
-        {/item}
+        {/contribution}
         Capital Contribution: <input type="text" name="capital"><br>
         Prepaid Customer Patronage: <input type="text" name="patronage"><br>
         <input type="hidden" name="_csrf" value="{_csrf}">

@@ -1,0 +1,25 @@
+{>"layouts/master" /}
+
+{<body}
+  <h3>Pay By Dwolla</h3>
+
+  <b>About Dwolla</b><br>
+  blah blah blah<br>
+  <br>
+
+  <script src="https://www.dwolla.com/scripts/button.min.js" class="dwolla_button" type="text/javascript"
+          data-key="cxGFg9h4ZiG9kBCBWaMpvkYjRGJucUutjFrgg4T4OsZ8AHHZpF"
+          data-redirect="http://local.coop:8000/c/thanks"
+          data-label="Make Payment"
+          data-name="Seed Coop Capital Contribution"
+          data-description="For campaign: {proposalTitle}"
+          data-amount="{capital}"
+          data-guest-checkout="true"
+          data-type="freetype"
+          >
+  </script>
+  <br>
+  <a href="/c/payment">[back]</a>
+
+
+{/body}

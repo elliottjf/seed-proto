@@ -1,0 +1,44 @@
+{>"layouts/master" /}
+
+{<body}
+  <h3>Pay by Check</h3>
+
+  <fieldset>
+    <form method="post" action="/c/paymentCheck">
+      <input type="hidden" name="contributionId" value="{contributionId}"><br>
+      Confirm Amount: <input type="text" name="amount" value="{capital}"><br>
+      <br>
+      <input type="radio" name="checkMethod" value="paperCheck">
+      <b>Paper Check</b><br>
+      Payable to: Seed Coop<br>
+      Please mail to:
+      <pre>
+      Seed Coop<br>
+      2323 Broadway<br>
+      Oakland, CA 94612</pre>
+      <br>
+      <input type="radio" name="checkMethod" value="otherECheck">
+      <b>Direct E-Check</b><br>
+      ABA Routing Number: 121182056 (Beneficial State Bank)<br>
+      Checking Account #: 33100009999 (Seed Coop, Inc.)<br>
+      <br>
+      <input type="radio" name="checkMethod" value="googleWallet">
+      <b>Google Wallet</b><br>
+      seed.coop@gmail.com<br>
+      <br>
+      <input type="radio" name="checkMethod" value="venmo">
+      <b>Venmo</b><br>
+      SeedCoop-Inc<br>
+      <br>
+      Note: please enter the Payment ID <b>12345</b> in the memo of your check or as the account # of your Bill Pay.
+      <br>
+      <br>
+      <input type="hidden" name="_csrf" value="{_csrf}">
+      <input type="submit" value="Confirm Payment Sent">
+      &nbsp; &nbsp;
+      <a href="/c/payment">[back]</a>
+    </form>
+  </fieldset>
+
+
+{/body}
