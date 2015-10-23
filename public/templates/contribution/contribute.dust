@@ -1,7 +1,7 @@
 {>"layouts/master" /}
 
 {<body}
-  {@eq key=lastAction value="p"}
+  {@eq key=lastAction value="pledge"}
     <h3>Thanks for Pledging!  Ready to Make a Contribution?</h3>
   {:else}
     <h3>Make a Contribution</h3>
@@ -24,7 +24,7 @@
         Capital Contribution: <input type="text" name="capital"><br>
         Prepaid Customer Patronage: <input type="text" name="patronage"><br>
         <input type="hidden" name="_csrf" value="{_csrf}">
-        <input type="submit" value="Contribute">
+        <input type="submit" value="Next">
       </form>
     </fieldset>
 

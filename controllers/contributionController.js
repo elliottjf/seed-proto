@@ -96,7 +96,7 @@ function handlePending(req, res) {
       return item.save();
     }).then(function (item) {
       if (pending.action == 'pledge') {
-        res.redirect('/c/contribute?id=' + item._id + '&la=p');
+        res.redirect('/c/contribute?id=' + item._id + '&la=' + pending.action);
       }
     })
     .catch( curriedHandleError(req, res) );

@@ -6,6 +6,7 @@ var userLib = require('../lib/user')()
 var helpers = require('../lib/helpers')
 
 var contributionController = require('./contributionController')
+var proposalController = require('./proposalController')
 
 //function handleError(err) {
 //  console.error(err);
@@ -67,9 +68,13 @@ function postLogin(req, res) {
  * handles any needed post login/signup logic
  */
 function afterAuth(req, res) {
-  if (!contributionController.handlePending(req, res)) {
-    res.redirect('/p')
+  if (proposalController.handlePending(req, res)) {
+    return
   }
+  if (contributionController.handlePending(req, res)) {
+    return
+  }
+  res.redirect('/p')
 }
 
 

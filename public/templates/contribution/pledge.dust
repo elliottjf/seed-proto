@@ -1,7 +1,11 @@
 {>"layouts/master" /}
 
 {<body}
-  <h3>Ready to Make a Pledge?</h3>
+  {@eq key=lastAction value="vote"}
+    <h3>Thanks for Voting!  Ready to Make a Pledge?</h3>
+  {:else}
+    <h3>Make a Pledge</h3>
+  {/eq}
 
   Proposal:<br/>
   {#proposal}
