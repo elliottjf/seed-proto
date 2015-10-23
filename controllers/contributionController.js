@@ -8,6 +8,10 @@ var Vote = require('../models/vote');
 var helpers = require('../lib/helpers');
 var curriedHandleError = _.curry(helpers.handleError)
 
+var stripe = require('../lib/stripe').instance()
+var braintree = require('../lib/braintree').instance()
+
+
 _.mixin({
   'inspect': function(value) {
     return require('circular-json').stringify(value);
@@ -195,6 +199,7 @@ function showStripe(req, res) {
   var model = req.session.pending
   model.amount = model.capital
   model.amountCents = model.capital * 100
+  model.publicKey = stripe.config().publicKey
   model.messages = req.flash('error');
   res.render('contribution/paymentStripe', model);
 }
@@ -209,15 +214,14 @@ function postStripe(req, res) {
 
   // Set your secret key: remember to change this to your live secret key in production
   // See your keys here https://dashboard.stripe.com/account/apikeys
-  var stripe = require("stripe")("sk_test_gNnKH2tmH4Fryn8FoJU57iWa");
-
+//  var stripe = require("stripe")("sk_test_gNnKH2tmH4Fryn8FoJU57iWa");
 
   var charge = stripe.charges.create({
     amount: amountCents // amount in cents, again
     , currency: "usd"
     , source: stripeToken
     , description: description
-  }, function(err, charge) {
+  }, function (err, charge) {
     console.log('stripe response - err: ' + err + ', charge: ' + _.inspect(charge))
     if (err && err.type === 'StripeCardError') {
       // The card has been declined
@@ -230,7 +234,49 @@ function postStripe(req, res) {
       res.redirect('/c/paymentStripe')
     }
   });
+}
 
+
+function showBraintree(req, res) {
+  //todo validate session state
+  var model = req.session.pending
+  model.amount = model.capital
+//    model.amountCents = model.capital * 100
+  model.messages = req.flash('error');
+  var clientToken
+
+  console.log('braintree: ' + _.inspect(braintree))
+  braintree.clientToken.generate({}, function (err, result) {
+    model.clientToken = result.clientToken
+    console.log('clientToken: ' + clientToken)
+    res.render('contribution/paymentBraintree', model)
+  });
+
+}
+
+function postBraintree(req, res) {
+  var amount = req.body.amount
+  var description = req.body.description
+  var paymentMethodNonce = req.body.payment_method_nonce
+
+  console.log('postBraintree - nonce: ' + paymentMethodNonce)
+
+  braintree.transaction.sale({
+    amount: amount
+    , paymentMethodNonce: paymentMethodNonce
+  }, function (err, result) {
+    console.log('braintree response - err: ' + err + ', result: ' + _.inspect(result))
+    if (err) { //} && err.type === 'StripeCardError') {
+      // The card has been declined
+      req.flash('error', "Sorry, that card has been declined")
+      res.redirect('/c/paymentBraintree')
+    } else if (result) {
+      res.redirect('/c/thanks')
+    } else {
+      req.flash('error', 'Sorry, there was an unexpected error: ' + err)
+      res.redirect('/c/paymentBraintree')
+    }
+  });
 }
 
 function showCheck(req, res) {
@@ -269,6 +315,8 @@ function addRoutes(router) {
   router.post('/c/paymentCheck', postCheck)
   router.get('/c/paymentStripe', showStripe)
   router.post('/c/paymentStripe', postStripe)
+  router.get('/c/paymentBraintree', showBraintree)
+  router.post('/c/paymentBraintree', postBraintree)
   router.get('/c/paymentBitcoin', showBitcoin)
 
 //  passthrough(router, 'c/thanks');

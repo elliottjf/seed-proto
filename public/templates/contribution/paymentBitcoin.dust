@@ -5,9 +5,14 @@
 
   <b>About Bitcoin</b><br>
   blah blah blah<br>
-  <br>
+  <h3><i>TODO</i></h3>
 
-  <i>TODO</i><br>
+  <b>Destination Bitcoin Address:</b><br>
+  <img src="/images/jfe-bitcoin-qr.png">
+  <br> <br>
+  1NC4VogsjepnGyztxwtTrQsxpiX6m43PuV
+  <br>
+  <br>
   <br>
   <a href="/c/payment">[back]</a>
 

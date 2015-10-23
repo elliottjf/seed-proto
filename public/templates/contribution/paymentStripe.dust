@@ -9,7 +9,7 @@
 
   <form action="/c/paymentStripe" method="POST">
     <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-            data-key="pk_test_nXchy2Bw65OZrUSnVH215bXr"
+            data-key="{publicKey}"
             data-amount="{amountCents}"
             data-name="Seed Coop"
             data-description="Campaign: {proposalTitle}"

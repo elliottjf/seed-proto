@@ -13,6 +13,7 @@
     "adaro": "^0.1.10",
     "bcrypt": "^0.8.5",
     "bluebird": "^2.10.2",
+    "braintree": "^1.29.0",
     "circular-json": "^0.2.0",
     "connect-flash": "^0.1.1",
     "construx": "^1.0.0",

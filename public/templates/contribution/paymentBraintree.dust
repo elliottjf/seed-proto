@@ -1,0 +1,35 @@
+{>"layouts/master" /}
+
+{<body}
+  <h3>Pay By Credit Card</h3>
+
+  <b>About Credit Cards</b><br>
+  blah blah blah<br>
+  <br>
+
+
+  Seed Coop Capital Contribution<br>
+  For Campaign: {proposalTitle}<br><br>
+
+  <form id="checkout" method="post" action="/c/paymentBraintree">
+    <div id="payment-form"></div>
+    <input type="hidden" name="_csrf" value="{_csrf}">
+    <input type="hidden" name="amount" value="{amount}">
+    <input type="submit" value="Pay ${amount}">
+  </form>
+
+  <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
+  <script>
+    var clientToken = "{clientToken}";
+
+    braintree.setup(clientToken, "dropin", {
+      container: "payment-form"
+    });
+  </script>
+
+
+  <br> <br>
+  <a href="/c/payment">[back]</a>
+
+
+{/body}
