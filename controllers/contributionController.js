@@ -10,6 +10,7 @@ var curriedHandleError = _.curry(helpers.handleError)
 
 var stripe = require('../lib/stripe').instance()
 var braintree = require('../lib/braintree').instance()
+var authorizeNet = require('../lib/authorizeNet').instance()
 
 
 _.mixin({
@@ -279,11 +280,63 @@ function postBraintree(req, res) {
   });
 }
 
+function showAuthorizeNet(req, res) {
+  //todo validate session state
+  var model = req.session.pending
+  model.amount = model.capital
+  model.messages = req.flash('error')
+  var clientToken
+
+  res.render('contribution/paymentAuthorizeNet', model)
+
+}
+
+function postAuthorizeNet(req, res) {
+  var amount = req.body.amount
+  var cardNumber = req.body.cardNumber
+  var expYear = req.body.expYear
+  var expMonth = req.body.expMonth
+
+  console.log('postAuthorizeNet')
+
+  authorizeNet.authCaptureTransaction(amount, cardNumber, expYear, expMonth)
+    .then(function (transaction) {
+      console.log('authorize.net response - transaction: ' + _.inspect(transaction))
+
+      if ( transaction.transactionResponse.responseCode == 1) {
+        //todo store transaction record
+        res.redirect('/c/thanks')
+      } else {
+        // not sure if this flow is possible or not
+        console.log('authnet failure - tranresp: ' + transaction.transactionResponse)
+        req.flash('error', 'Sorry, there was an error processing your transaction')
+        res.redirect('/c/paymentAuthorizeNet')
+      }
+    })
+    .catch(function(result) {
+      // todo: catch and display error page if exception throw in the catch block
+      console.log('authnet failure - err: ' + _.inspect(result))
+      var message = 'Sorry, there was an error processing your transaction: ' + _.inspect(result)  // extra verbose by default for now unless we extra our expected nested error text
+
+      console.log('tran response: ' + _.inspect(result.transactionResponse))
+      // todo: use some sort of jsonpath util here
+      if (result.transactionResponse && result.transactionResponse.errors) {
+        var errors = result.transactionResponse.errors
+        if (errors.error && errors.error.errorText) {
+          message = errors.error.errorText
+        }
+      }
+      req.flash('error', message)
+      res.redirect('/c/paymentAuthorizeNet')
+    })
+}
+
+
 function showCheck(req, res) {
 //  var model = {pending: req.session.pending}
   var model = req.session.pending
-  model.messages = req.flash('error');
-  res.render('contribution/paymentCheck', model);
+  model.messages = req.flash('error')
+  res.render('contribution/paymentCheck', model)
 }
 
 function postCheck(req, res) {
@@ -317,6 +370,8 @@ function addRoutes(router) {
   router.post('/c/paymentStripe', postStripe)
   router.get('/c/paymentBraintree', showBraintree)
   router.post('/c/paymentBraintree', postBraintree)
+  router.get('/c/paymentAuthorizeNet', showAuthorizeNet)
+  router.post('/c/paymentAuthorizeNet', postAuthorizeNet)
   router.get('/c/paymentBitcoin', showBitcoin)
 
 //  passthrough(router, 'c/thanks');

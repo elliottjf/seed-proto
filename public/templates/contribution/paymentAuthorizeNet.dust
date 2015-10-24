@@ -1,0 +1,40 @@
+{>"layouts/master" /}
+
+{<body}
+  <h3>Pay By Credit Card</h3>
+
+  <b>About Credit Cards</b><br>
+  blah blah blah<br>
+  <br>
+
+
+  Seed Coop Capital Contribution<br>
+  For Campaign: {proposalTitle}<br><br>
+
+  {?messages}
+    <ul>
+      {#messages}
+        <li>{.}</li>
+      {/messages}
+    </ul>
+  {/messages}
+
+
+  <form method="post" action="/c/paymentAuthorizeNet">
+    <input type="hidden" name="amount" value="{amount}">
+    <input name="cardNumber" placeholder="CC #" value="" maxlength="16"><br>
+    <input name="expMonth" placeholder="MM" value="" maxlength="2" size="2">
+    <input name="expYear" placeholder="YYYY" value="" maxlength="4" size="4">
+    <input name="cvv" placeholder="cvv" value="" maxlength="4" size="4"><br>
+    <input name="firstName" value="" placeholder="First Name">
+    <input name="lastName" value="" placeholder="Last Name"><br>
+    <input type="hidden" name="_csrf" value="{_csrf}">
+    <input type="submit" value="Complete Payment">
+  </form>
+
+
+  <br> <br>
+  <a href="/c/payment">[back]</a>
+
+
+{/body}

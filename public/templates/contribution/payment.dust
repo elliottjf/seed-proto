@@ -14,6 +14,7 @@
       <input type="radio" name="paymentMethod" value="Check">Check / Other E-Check<br>
       <input type="radio" name="paymentMethod" value="Stripe">Credit Card (Stripe)<br>
       <input type="radio" name="paymentMethod" value="Braintree">Credit Card (Braintree)<br>
+      <input type="radio" name="paymentMethod" value="AuthorizeNet">Credit Card (AuthorizeNet)<br>
       <input type="radio" name="paymentMethod" value="Bitcoin">Bitcoin<br>
       <input type="hidden" name="_csrf" value="{_csrf}">
       <!--todo: make this client-side dynamic -->
