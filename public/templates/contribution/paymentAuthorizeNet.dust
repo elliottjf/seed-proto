@@ -14,7 +14,7 @@
   Seed Coop Capital Contribution<br>
   For Campaign: {proposalTitle}<br>
   <br>
-  Amount: <b>${amount}</b><br><br>
+  {!Amount: <b>${amount}</b><br><br>!}
 
   {?messages}
     <ul>
@@ -24,16 +24,23 @@
     </ul>
   {/messages}
 
-  <div id="cardInfo"><br><br></div>
-
   <form id="cardForm" method="post" action="/c/paymentAuthorizeNet">
-    <input type="hidden" name="amount" value="{amount}">
-    <input id="cardNumber" name="cardNumber" placeholder="CC #" value="" maxlength="16"><br>
+    {!<input type="hidden" name="amount" value="{amount}">!}
+    Amount: $<input class="recalc" type="text" name="amount" value="{amount}"><br><br>
+
+    <div id="cardInfo"></div>
+
+    <input class="recalc" id="cardNumber" name="cardNumber" placeholder="CC #" value="" maxlength="16"><br>
     <input name="expMonth" placeholder="MM" value="" maxlength="2" size="2">
     <input name="expYear" placeholder="YYYY" value="" maxlength="4" size="4">
     <input name="cvv" placeholder="cvv" value="" maxlength="4" size="4"><br>
-    <input name="firstName" value="" placeholder="First Name">
-    <input name="lastName" value="" placeholder="Last Name"><br>
+
+    {!Card Number: <input id="cardNumber" name="cardNumber" placeholder="CC #" value="" maxlength="16"><br>!}
+    {!MM YYYY cvv: <input name="expMonth" placeholder="MM" value="" maxlength="2" size="2">!}
+    {!<input name="expYear" placeholder="YYYY" value="" maxlength="4" size="4">!}
+    {!<input name="cvv" placeholder="cvv" value="" maxlength="4" size="4"><br>!}
+    {!Name: <input name="firstName" value="" placeholder="First">!}
+    {!<input name="lastName" value="" placeholder="Last"><br>!}
     <input type="hidden" name="_csrf" value="{_csrf}">
     <input type="submit" value="Complete Payment">
   </form>

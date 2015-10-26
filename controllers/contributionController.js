@@ -423,11 +423,81 @@ function showBitcoin(req, res) {
 
 function fetchBinbase(req, res) {
   var bin = req.params.bin;
+  var amount = req.params.amount;
+  console.log('bin: ' + bin + ", amount: " + amount);
   Binbase.findOne({bin: bin}).exec()
     .then(function (item) {
+      if (amount) {
+        item.estimatedFee = calculateFee(item, amount);  // should clone first or nest result
+      }
       res.json(200, item);
     })
     .catch( curriedHandleError(req, res) );
+}
+
+function estimateFee(req, res) {
+  var bin = req.params.bin || req.query.bin;
+  var amount = req.params.amount || req.query.amount;
+  console.log('bin: ' + bin + ", amount: " + amount);
+  Binbase.findOne({bin: bin}).exec()
+    .then(function (item) {
+      console.log("found binbase: " + item);
+      var result = calculateFee(item, amount);
+//      _.merge(result, item);
+      //todo, not sure why the merge didn't work. mongoose magic?
+      result.cardBrand = item.cardBrand;
+      result.issuingOrg = item.issuingOrg;
+      result.cardType = item.cardType;
+      result.cardCategory = item.cardCategory;
+      result.isRegulated = item.isRegulated;
+      res.json(200, result);
+    })
+    .catch( curriedHandleError(req, res) );
+}
+
+function calculateFee(binbase, amount) {
+  var base = 0.30;
+  var percent = 2.9;
+  var message = null;
+  if (binbase) {
+    if (binbase.cardBrand == 'AMEX') {
+      base = 0.30;
+      percent = 3.5;
+      message = "Tip: AMEX has the highest fees!";
+    }
+    if (binbase.cardBrand == 'VISA' || binbase.cardBrand == 'MASTERCARD') {
+      if (binbase.cardType == 'DEBIT') {
+        base = 0.22;
+        if (binbase.isRegulated) {
+          percent = 0.05;
+          message = "Good choice, Debit Cards have the lowest fees!"
+        } else {
+          percent = 0.80;
+          message = "Good choice, Debit Cards have lower fees."
+        }
+      } else {
+        base = 0.12;
+        message = "Tip: Debit Cards generally have lower fees than Credit Cards";
+        if (binbase.cardCategory == 'PLATINUM' || binbase.cardCategory == 'BUSINESS') {
+          percent = 2.9;
+          message += ", and Rewards Cards have the highest fees."
+        } else if (binbase.cardCategory == 'GOLD') {
+          percent = 2.2;
+          message += ", and Rewards Cards have higher fees."
+        } else {
+          percent = 1.8;
+        }
+      }
+    }
+    if (amount < 20) {
+      message = "";
+    }
+
+  }
+  var fee = base + amount * percent/100;
+  fee = Math.ceil(fee * 100) / 100;
+  console.log('calcfee - ' + binbase + ', base: ' + base + ', %: ' + percent + ' = ' + fee);
+  return {estimatedFee: fee, feeTip: message};
 }
 
 
@@ -455,7 +525,9 @@ function addRoutes(router) {
   router.get('/c/paymentAuthorizeNet', showAuthorizeNet);
   router.post('/c/paymentAuthorizeNet', postAuthorizeNet);
   router.get('/c/paymentBitcoin', showBitcoin);
+
   router.get('/api/binbase/:bin', fetchBinbase);
+  router.get('/api/estimateFee', estimateFee);
 
 //  passthrough(router, 'c/thanks');
   router.get('/c/thanks', function (req, res) { res.render('contribution/thanks', {}) });
