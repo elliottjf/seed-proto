@@ -23,6 +23,7 @@ var attributes = {
   , orgWebsite: String  // i.e. HTTP://WWW.ARTISANSBANK.COM
   , orgPhone: String   // i.e. 302-658-6881
   , orgId: String      // todo sort out propertly relation refs
+  , isRegulated: Boolean
 };
 
 var modelFactory = function () {
