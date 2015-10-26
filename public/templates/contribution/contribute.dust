@@ -8,10 +8,12 @@
   {/eq}
 
   {#proposal}
-    Proposal:<br/>
-    id: {_id}<br/>
+    <a href="/p/{_id}/view">Proposal:</a><br/>
+    {!id: {_id}<br/>!}
     title: {title}<br/>
+    {!title: <a href="/p/{_id}/view">{title}</a><br/>!}
     summary: {summary}<br/>
+    <br>
 
     <fieldset>
       <form method="post" action="/c/contribute">
@@ -22,8 +24,8 @@
           Pledged Capital Contribution: {pledgedCapital}<br>
           Pledged Customer Patronage: {pledgedPatronage}<br>
         {/contribution}
-        Capital Contribution: <input type="text" name="capital"><br>
-        Prepaid Customer Patronage: <input type="text" name="patronage"><br>
+        Capital Contribution: <input type="text" name="capital" value="{defaultCapital}"><br>
+        {!Prepaid Customer Patronage: <input type="text" name="patronage"><br>!}
         <input type="hidden" name="_csrf" value="{_csrf}">
         <input type="submit" value="Next">
       </form>

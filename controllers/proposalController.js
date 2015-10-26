@@ -4,6 +4,7 @@ var _ = require('lodash');
 var mongoose = require('mongoose');
 var Proposal = require('../models/proposal');
 var Vote = require('../models/vote');
+var Contribution = require('../models/contribution');
 var helpers = require('../lib/helpers');
 var curriedHandleError = _.curry(helpers.handleError);
 
@@ -23,16 +24,19 @@ function list(req, res) {
 function view(req, res) {
   var id = req.param('id');
   var proposal;
+  var model = {};
   Proposal.findOne({_id: id}).exec()
-    .then(function (item) {
+    .then(function(item) {
       proposal = item;
-      return Vote.find({proposalId: item._id});
+      model.item = item;
+      return Vote.find({proposalId: proposal._id});
     })
     .then(function (votes) {
-      var model = {
-        item: proposal,
-        votes: votes
-      };
+      model.votes = votes;
+      return Contribution.find({proposalId: proposal._id});
+    })
+    .then(function (contributions) {
+      model.contributions = contributions;
       res.render('proposal/view', model);
     })
     .catch( curriedHandleError(req, res) );
@@ -64,6 +68,14 @@ function postEdit(req, res) {
     .catch( curriedHandleError(req, res) );
 }
 
+function deleteProposal(req, res) {
+  var id = req.param('id');
+  Proposal.remove({_id: id}).exec()
+    .then(function () {
+      res.redirect('/p');
+    })
+    .catch( curriedHandleError(req, res) );
+}
 
 function showVote(req, res) {
   var id = req.param('pid');
@@ -95,6 +107,7 @@ function postVote(req, res) {
   if (req.user) {
     console.log("userId: " + req.user._id);
     model.userId = req.user._id;
+    model.userName = req.user.name;
   }
 
   Vote.create(model)
@@ -111,7 +124,8 @@ function postVote(req, res) {
 }
 
 function handleVoteSuccess(req, res, vote) {
-  var path = '/c/pledge?pid=' + vote.proposalId + '&la=v';
+//  var path = '/c/pledge?pid=' + vote.proposalId + '&la=vote';
+  var path = '/p/' + vote.proposalId + '/pledge?la=vote&vid=' + vote._id;
   res.redirect(path);
 
 }
@@ -136,6 +150,7 @@ function handlePending(req, res) {
   Vote.findOne({_id: pending.voteId}).exec()
     .then(function (item) {
       item.userId = req.user._id;
+      item.userName = req.user.name;
       console.log("userid: " + item.userId);
       return item.save();
     }).then(function (item) {
@@ -159,14 +174,31 @@ function voteView(req, res) {
     .catch( curriedHandleError(req, res) );
 }
 
+function deleteVote(req, res) {
+  var id = req.param('id');
+  Vote.remove({_id: id}).exec()
+    .then(function () {
+      res.redirect('/p');
+    })
+    .catch( curriedHandleError(req, res) );
+}
+
+
 function addRoutes(router) {
   router.get('/p', list);
   router.get('/p/view', view);
+  router.get('/p/:id/view', view);
   router.get('/p/edit', showEdit);
   router.post('/p/edit', postEdit);
   router.get('/p/vote', showVote);
+  router.get('/p/:pid/vote', showVote);
   router.post('/p/vote', postVote);
+
   router.get('/vote/view', voteView);
+  router.get('/vote/:id/view', voteView);
+
+  router.get('/p/:id/delete', deleteProposal);
+  router.get('/vote/:id/delete', deleteVote);
 }
 
 module.exports = {

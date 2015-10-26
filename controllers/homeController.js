@@ -99,7 +99,8 @@ function showSignup(req, res) {
 function postSignup(req, res) {
   var email = req.param('email');
   var password = req.param('password');
-  userLib.createUser(email, password, function (err, status, newUser) {
+  var name = req.param('name');
+  userLib.createUser(email, password, name, function (err, status, newUser) {
     if (err) {
       return helpers.negotiate(req, res, err);
     } else {

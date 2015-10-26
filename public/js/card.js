@@ -20,8 +20,8 @@ function updateCardInfo() {
     context: document.body,
     success: function(result) {
       if (result) {
-        var bindata = "Information about your card: <br>" + result.cardBrand + ", " + result.cardType + ", " + result.cardCategory +
-          ", " + result.issuingOrg + ", " + (result.isRegulated ? "regulated bank" : "unregulated bank");
+        var bindata = "<b>Information about your card</b>: <br>&nbsp; &nbsp;" + result.cardBrand + ", " + result.cardType + ", " + result.cardCategory +
+          ", " + result.issuingOrg + ", " + (result.isRegulated ? "regulated bank" : "unregulated bank") + "";
         var infoDiv = document.getElementById("cardInfo");
         $("#cardInfo").html(bindata);
       } else {

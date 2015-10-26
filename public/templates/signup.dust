@@ -20,6 +20,10 @@
           {!<td><input id="username" name="username" type="text"/></td>!}
           {!</tr>!}
           <tr>
+            <td><label for="name">Name: </label></td>
+            <td><input id="name" name="name" type="text"/></td>
+          </tr>
+          <tr>
             <td><label for="email">Email: </label></td>
             <td><input id="email" name="email" type="text"/></td>
           </tr>

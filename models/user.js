@@ -14,6 +14,7 @@ var attributes = _.merge({
   email: {type: String, unique: true}  //Ensure logins are unique.
   , authenticationData: String //We'll store bCrypt hashed passwords.
   , role: String
+  , name: String  //todo: move to Profile
 }, baseModel.baseAttributes);
 
 var modelFactory = function () {

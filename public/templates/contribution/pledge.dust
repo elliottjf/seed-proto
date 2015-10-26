@@ -7,18 +7,19 @@
     <h2>Make a Pledge</h2>
   {/eq}
 
-  Proposal:<br/>
   {#proposal}
-    id: {_id}<br/>
+    <a href="/p/{_id}/view">Proposal:</a><br/>
+    {!id: {_id}<br/>!}
     title: {title}<br/>
     summary: {summary}<br/>
+    <br>
 
     <fieldset>
       <form method="post" action="/c/pledge">
         <input type="hidden" name="proposalId" value="{_id}"><br>
         {#item}
-          Pledged Capital Contribution: <input type="text" name="pledgedCapital"><br>
-          Pledged Customer Patronage: <input type="text" name="pledgedPatronage"><br>
+          Pledged Capital Contribution: <input type="text" name="pledgedCapital" value="{anticipatedCapital}"><br>
+          Pledged Customer Patronage: <input type="text" name="pledgedPatronage" value="{anticipatedPatronage}"><br>
         {/item}
         <input type="hidden" name="_csrf" value="{_csrf}">
         <input type="submit" value="Pledge">

@@ -15,6 +15,7 @@ var attributes = _.merge({
   supporter: {type: mongoose.Schema.Types.ObjectId, ref: 'Profile'}
   , proposal: {type: mongoose.Schema.Types.ObjectId, ref: 'Proposal'}
   , userId: String
+  , userName: String  //denormalized for now
   , supporterId: String
   , proposalId: String
   , description: String

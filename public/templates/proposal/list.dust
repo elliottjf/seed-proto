@@ -7,12 +7,12 @@
     {#items}
       <tr>
         <td>
-          <a href="/p/view?id={_id}">{title}</a>
+          <a href="/p/{_id}/view">{title}</a>
         </td>
         <td>
-          <a href="/p/vote?pid={_id}">[vote]</a> &nbsp;
-          <a href="/c/pledge?pid={_id}">[pledge]</a> &nbsp;
-          <a href="/c/contribute?pid={_id}">[contribute]</a>
+          <a href="/p/{_id}/vote">[vote]</a> &nbsp;
+          <a href="/p/{_id}/pledge">[pledge]</a> &nbsp;
+          <a href="/p/{_id}/contribute">[contribute]</a>
 
         </td>
       </tr>

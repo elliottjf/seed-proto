@@ -4,25 +4,27 @@
   <h2>Proposal Detail</h2>
 
   {#item}
-    id: {_id}<br/>
+    {!id: <a href="/p/{_id}/view">{_id}</a><br/>!}
     title: {title}<br/>
     summary: {summary}<br/>
     <br/>
-    <a href="/p/vote?pid={_id}">[vote]</a> &nbsp;
-    <a href="/c/pledge?pid={_id}">[pledge]</a> &nbsp;
-    <a href="/c/contribute?pid={_id}">[contribute]</a>
+    <a href="/p/{_id}/vote">[vote]</a> &nbsp;
+    <a href="/p/{_id}/pledge">[pledge]</a> &nbsp;
+    <a href="/p/{_id}/contribute">[contribute]</a>
 
   {/item}
 
   <br/>
   <br/>
   <br/>
-  <fieldset>
-  Votes:<br/>
-  <table>
-    <th>Vote Rank</th><th>Anticipated Capital Contribution</th><th>Anticipated Customer Patronage</th>
+  <b>Votes:</b><br/>
+  <table border="1">
+    <th>Supporter</th><th>Vote Rank</th><th>Anticipated Capital Contribution</th><th>Anticipated Customer Patronage</th><th>Worker Interest</th>
   {#votes}
     <tr>
+      <td>
+        {userName}
+      </td>
       <td>
         {voteRank}
       </td>
@@ -33,11 +35,47 @@
         {anticipatedPatronage}
       </td>
       <td>
-        <a href="/vote/view?id={_id}">[view]</a>
+        {workerInterest}
+      </td>
+      <td>
+        <a href="/vote/{_id}/view">[view]</a>
       </td>
     </tr>
   {/votes}
   </table>
-  </fieldset>
+
+  <br>
+  <b>Pledges/Contributions:</b><br/>
+  <table border="1">
+    <th>Supporter</th><th>Pledged Capital</th><th>Pledged Patronage</th><th>Paid Capital</th><th>Paid Patronage</th>
+    {#contributions}
+      <tr>
+        <td>
+          {userName}
+        </td>
+        <td>
+          {pledgedCapital}
+        </td>
+        <td>
+          {pledgedPatronage}
+        </td>
+        <td>
+          {paidCapital}
+        </td>
+        <td>
+          {paidPatronage}
+        </td>
+        {!<td>!}
+          {!<a href="/c/{_id}/view">[view]</a>!}
+        {!</td>!}
+      </tr>
+    {/contributions}
+  </table>
+  <br>
+  <hr>
+  {#item}
+    <a href="/p/{_id}/delete">[delete]</a>
+  {/item}
+
 
 {/body}
