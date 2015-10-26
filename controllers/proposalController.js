@@ -166,9 +166,14 @@ function voteView(req, res) {
   //var model = {item: {id:1,title:"the first proposal"}};
   //res.render('proposal/view', model);
   var id = req.param('id');
+  var  model = {};
   Vote.findOne({_id: id}).exec()
     .then(function(item) {
-      var model = { item: item };
+      model.item = item;
+      return Proposal.findOne({_id: item.proposalId});
+    })
+    .then(function(proposal) {
+      model.proposal = proposal;
       res.render('vote/view', model);
     })
     .catch( curriedHandleError(req, res) );

@@ -4,11 +4,8 @@
   <h2>Proposal Detail</h2>
 
   {#item}
-    {!id: <a href="/p/{_id}/view">{_id}</a><br/>!}
-    {!title: {title}<br/>!}
-    title: <a href="/p/{_id}/view">{title}</a><br/>
-    summary: {summary}<br/>
-    <br/>
+    {>"proposal/_summary"/}
+
     <a href="/p/{_id}/vote">[vote]</a> &nbsp;
     <a href="/p/{_id}/pledge">[pledge]</a> &nbsp;
     <a href="/p/{_id}/contribute?id={_id}">[contribute]</a>

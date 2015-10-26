@@ -1,0 +1,6 @@
+{!proposal action links, assumes proposal context!}
+
+
+<a href="/p/{_id}/vote">[Vote]</a> &nbsp;
+<a href="/p/{_id}/pledge">[Pledge]</a> &nbsp;
+<a href="/p/{_id}/contribute">[Contribute]</a>

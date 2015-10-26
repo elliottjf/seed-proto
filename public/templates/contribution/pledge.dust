@@ -8,11 +8,7 @@
   {/eq}
 
   {#proposal}
-    <a href="/p/{_id}/view">Proposal:</a><br/>
-    {!id: {_id}<br/>!}
-    title: {title}<br/>
-    summary: {summary}<br/>
-    <br>
+    {>"proposal/_summary"/}
 
     <fieldset>
       <form method="post" action="/c/pledge">

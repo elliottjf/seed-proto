@@ -226,12 +226,18 @@ function showDwolla(req, res) {
 }
 
 function showStripe(req, res) {
+  // todo: factor this to be shared
+  if (!req.session.pending) {
+    console.error("showStripe - missing pending state");
+    res.redirect('/p');
+    return;
+  }
 //  var model = {pending: req.session.pending}
   //todo validate session state
   var model = req.session.pending;
   model.amount = model.capital;
   model.amountCents = model.capital * 100;
-  model.publicKey = stripe.config().publicKey;
+  model.publicKey = stripe.config.publicKey;
   model.messages = req.flash('error');
   res.render('contribution/paymentStripe', model);
 }
