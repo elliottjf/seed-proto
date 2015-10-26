@@ -102,7 +102,7 @@ function handlePledgeSuccess(req, res, contribution) {
 function handlePending(req, res) {
 
   var pending = req.session.pending;
-  if ( ! pending || pending.action != 'pledge' ) {
+  if ( ! pending ) {
     return false;
   }
 
@@ -112,21 +112,26 @@ function handlePending(req, res) {
     throw new Error('unexpected missing user context')
   }
 
-  delete req.session.pending;
-
-  Contribution.findOne({_id: pending.contributionId}).exec()
-    .then(function (contribution) {
-      contribution.userId = req.user._id;
-      console.log("userid: " + contribution.userId);
-      return contribution.save();
-    }).then(function (contribution) {
-      if (pending.action == 'pledge') {
-        handlePledgeSuccess(req, res, contribution);
-//        res.redirect('/c/contribute?id=' + item._id + '&la=' + pending.action);
-      }
-    })
-    .catch( curriedHandleError(req, res) );
-  return true
+  if (pending.action == 'pledge') {
+    delete req.session.pending;
+    Contribution.findOne({_id: pending.contributionId}).exec()
+      .then(function (contribution) {
+        contribution.userId = req.user._id;
+        console.log("userid: " + contribution.userId);
+        return contribution.save();
+      }).then(function (contribution) {
+        if (pending.action == 'pledge') {
+          handlePledgeSuccess(req, res, contribution);
+        }
+      })
+      .catch(curriedHandleError(req, res));
+    return true;
+  } else if (pending.action == 'contribute') {
+    res.redirect('/c/payment');
+    return true;
+  } else {
+    return false;
+  }
 }
 
 function showContribute(req, res) {

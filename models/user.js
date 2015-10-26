@@ -5,16 +5,15 @@
 var _ = require('lodash');
 var Promise = require("bluebird");
 var mongoose = Promise.promisifyAll(require("mongoose"));
-//var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 var crypto = require('../lib/crypto');
 var baseModel = require('./baseModel');
 
 
 var attributes = _.merge({
-  email: {type: String, unique: true},  //Ensure logins are unique.
-  authenticationData: String, //We'll store bCrypt hashed passwords.
-  role: String
+  email: {type: String, unique: true}  //Ensure logins are unique.
+  , authenticationData: String //We'll store bCrypt hashed passwords.
+  , role: String
 }, baseModel.baseAttributes);
 
 var modelFactory = function () {

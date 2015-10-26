@@ -1,7 +1,7 @@
 {>"layouts/master" /}
 
 {<body}
-  <h3>Proposals</h3>
+  <h2>Proposals</h2>
 
   <table>
     {#items}
@@ -10,7 +10,10 @@
           <a href="/p/view?id={_id}">{title}</a>
         </td>
         <td>
-          <a href="/p/vote?pid={_id}">[vote]</a>
+          <a href="/p/vote?pid={_id}">[vote]</a> &nbsp;
+          <a href="/c/pledge?pid={_id}">[pledge]</a> &nbsp;
+          <a href="/c/contribute?pid={_id}">[contribute]</a>
+
         </td>
       </tr>
     {/items}

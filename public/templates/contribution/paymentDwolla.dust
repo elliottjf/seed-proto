@@ -1,7 +1,7 @@
 {>"layouts/master" /}
 
 {<body}
-  <h3>Pay By Dwolla</h3>
+  <h2>Pay By Dwolla</h2>
 
   <b>About Dwolla</b><br>
   blah blah blah<br>

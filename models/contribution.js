@@ -12,24 +12,24 @@ var mongoose = require('mongoose');
 var baseModel = require('./baseModel');
 
 var attributes = _.merge({
-  supporter: {type: mongoose.Schema.Types.ObjectId, ref: 'Profile'},
-  proposal: {type: mongoose.Schema.Types.ObjectId, ref: 'Proposal'},
-  userId: String,
-  supporterId: String,
-  proposalId: String,
-  description: String,
+  supporter: {type: mongoose.Schema.Types.ObjectId, ref: 'Profile'}
+  , proposal: {type: mongoose.Schema.Types.ObjectId, ref: 'Proposal'}
+  , userId: String
+  , supporterId: String
+  , proposalId: String
+  , description: String
   //better fixed precision data type?
-  pledgedCapital: Number,
-  pledgedPatronage: Number,
-  paidCapital: Number,
-  paidPatronage: Number,
+  , pledgedCapital: Number
+  , pledgedPatronage: Number
+  , paidCapital: Number
+  , paidPatronage: Number
 }, baseModel.baseAttributes);
 
 var modelFactory = function () {
 
   var schema = mongoose.Schema(attributes);
 
-  schema.methods.whatAmI = function () {
+  schema.methods.toString = function () {
     return 'Contribution[' + this._id + ', amount: ' + this.amount + ']';
   };
 

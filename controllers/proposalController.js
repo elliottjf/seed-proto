@@ -56,7 +56,7 @@ function postEdit(req, res) {
   //}
 
   var item = new Proposal({title: title, summary: summary});
-  console.log("item: " + item.whatAmI());
+  console.log("item: " + item);
   item.save()
     .then(function() {
       res.redirect('/p');
@@ -104,15 +104,15 @@ function postVote(req, res) {
         req.session.pending = {action: 'vote', voteId: item._id, message: 'please signin or login to register your vote'};
         res.redirect('/signup');
       } else {
-        handleVoteSuccess(req, res, item)
+        handleVoteSuccess(req, res, item);
       }
     })
     .catch( curriedHandleError(req, res) );
 }
 
 function handleVoteSuccess(req, res, vote) {
-  var path = '/c/pledge?pid=' + vote.proposalId + '&la=v'
-  res.redirect(path)
+  var path = '/c/pledge?pid=' + vote.proposalId + '&la=v';
+  res.redirect(path);
 
 }
 
@@ -120,26 +120,26 @@ function handleVoteSuccess(req, res, vote) {
 
 function handlePending(req, res) {
 
-  var pending = req.session.pending
+  var pending = req.session.pending;
   if ( ! pending || pending.action != 'vote' ) {
     return false;
   }
 
-  console.log('pending action: ' + pending.action)
+  console.log('pending action: ' + pending.action);
 
   if ( ! req.user ) {
     throw new Error('unexpected missing user context')
   }
 
-  delete req.session.pending
+  delete req.session.pending;
 
   Vote.findOne({_id: pending.voteId}).exec()
     .then(function (item) {
       item.userId = req.user._id;
-      console.log("userid: " + item.userId)
+      console.log("userid: " + item.userId);
       return item.save();
     }).then(function (item) {
-      handleVoteSuccess(req, res, item)
+      handleVoteSuccess(req, res, item);
     })
     .catch( curriedHandleError(req, res) );
   return true
@@ -172,4 +172,4 @@ function addRoutes(router) {
 module.exports = {
   addRoutes: addRoutes
   , handlePending: handlePending
-}
+};

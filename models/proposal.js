@@ -13,16 +13,15 @@ var baseModel = require('./baseModel');
 
 
 var attributes = _.merge({
-  title: String,
-  summary: String
+  title: String
+  , summary: String
 }, baseModel.baseAttributes);
 
 var modelFactory = function () {
 
   var schema = mongoose.Schema(attributes);
 
-  //Verbose toString method
-  schema.methods.whatAmI = function () {
+  schema.methods.toString = function () {
     return 'Proposal[' + this._id + ', title: ' + this.title + ']';
   };
 

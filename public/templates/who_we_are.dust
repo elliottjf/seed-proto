@@ -3,10 +3,12 @@
 {<body}
   <div class="row">
     <div>
-      <h4>
+      <h2>
         Who We Are
-      </h4>
+      </h2>
     </div>
+
+    blah blah blah<br>
 
   </div>
 

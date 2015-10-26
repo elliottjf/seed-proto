@@ -1,7 +1,7 @@
 {>"layouts/master" /}
 
 {<body}
-  <h3>Proposal Vote</h3>
+  <h2>Proposal Vote</h2>
 
   {#proposal}
     id: {_id}<br/>

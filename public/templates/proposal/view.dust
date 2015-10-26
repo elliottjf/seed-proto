@@ -1,7 +1,7 @@
 {>"layouts/master" /}
 
 {<body}
-  <h3>Proposal Detail</h3>
+  <h2>Proposal Detail</h2>
 
   {#item}
     id: {_id}<br/>

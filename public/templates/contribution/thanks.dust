@@ -1,7 +1,7 @@
 {>"layouts/master" /}
 
 {<body}
-  <h3>Thanks for your Contribution!</h3>
+  <h2>Thanks for your Contribution!</h2>
 
   blah blah blah<br>
   <br>

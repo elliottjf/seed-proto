@@ -2,9 +2,9 @@
 
 {<body}
   {@eq key=lastAction value="pledge"}
-    <h3>Thanks for Pledging!  Ready to Make a Contribution?</h3>
+    <h2>Thanks for Pledging!  Ready to Make a Contribution?</h2>
   {:else}
-    <h3>Make a Contribution</h3>
+    <h2>Make a Contribution</h2>
   {/eq}
 
   {#proposal}

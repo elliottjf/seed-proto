@@ -1,13 +1,13 @@
 'use strict';
 
-var mongoose = require('mongoose')
-var passport = require('passport')
-var userLib = require('../lib/user')()
-var helpers = require('../lib/helpers')
-var passthrough = helpers.passthrough
+var mongoose = require('mongoose');
+var passport = require('passport');
+var userLib = require('../lib/user')();
+var helpers = require('../lib/helpers');
+var passthrough = helpers.passthrough;
 
-var contributionController = require('./contributionController')
-var proposalController = require('./proposalController')
+var contributionController = require('./contributionController');
+var proposalController = require('./proposalController');
 
 //function handleError(err) {
 //  console.error(err);
@@ -16,15 +16,15 @@ var proposalController = require('./proposalController')
 
 
 function buildMessages(req) {
-  var messages = []
-  var pending = req.session.pending
+  var messages = [];
+  var pending = req.session.pending;
   if ( pending && pending.message && !!pending.message.trim() ) {
-    messages.push(pending.message)
+    messages.push(pending.message);
   }
 
   //Include any error messages that come from the login process.
-  var flashError = req.flash('error')
-  console.log('flashError: [' + flashError + '], const:' + flashError.constructor)
+  var flashError = req.flash('error');
+  console.log('flashError: [' + flashError + '], const:' + flashError.constructor);
   if (flashError) {
     messages.concat( flashError );
   }
@@ -42,8 +42,8 @@ function home(req, res) {
  */
 function showLogin(req, res) {
   //Include any error messages that come from the login process.
-  var model =  {messages: buildMessages(req)}
-  res.render('login', model)
+  var model =  {messages: buildMessages(req)};
+  res.render('login', model);
 }
 
 /**
@@ -59,8 +59,8 @@ function postLogin(req, res) {
     , failureRedirect: '/login'
     , failureFlash: true
   })(req, res, function (err) {
-    console.log("auth err: " + err)
-    res.redirect('/login')
+    console.log("auth err: " + err);
+    res.redirect('/login');
   });
 }
 
@@ -75,7 +75,7 @@ function afterAuth(req, res) {
   if (contributionController.handlePending(req, res)) {
     return
   }
-  res.redirect('/p')
+  res.redirect('/p');
 }
 
 
@@ -84,9 +84,9 @@ function afterAuth(req, res) {
  * Display the login page. We also want to display any error messages that result from a failed login attempt.
  */
 function showSignup(req, res) {
-  var messages = buildMessages(req)
-  var model =  {messages: messages}
-  res.render('signup', model)
+  var messages = buildMessages(req);
+  var model =  {messages: messages};
+  res.render('signup', model);
 }
 
 /**
@@ -97,24 +97,24 @@ function showSignup(req, res) {
  * Failed authentications will go back to the login page with a helpful error message to be displayed.
  */
 function postSignup(req, res) {
-  var email = req.param('email')
-  var password = req.param('password')
+  var email = req.param('email');
+  var password = req.param('password');
   userLib.createUser(email, password, function (err, status, newUser) {
     if (err) {
-      return helpers.negotiate(req, res, err)
+      return helpers.negotiate(req, res, err);
     } else {
       if ('emailAddressInUse' === status) {
         return res.emailAddressInUse()
       } else if (newUser) {
         req.login(newUser, function (err) {
           if (err) {
-            console.error(err)
+            console.error(err);
           }
-          res.redirect('/afterAuth')
+          res.redirect('/afterAuth');
         });
       } else {
-        console.error("unexpected createUser status: " + status)
-        res.redirect('/afterAuth')
+        console.error("unexpected createUser status: " + status);
+        res.redirect('/afterAuth');
       }
     }
   })
@@ -122,8 +122,8 @@ function postSignup(req, res) {
 
 
 function logout(req, res) {
-  req.logout()
-  res.redirect('/')
+  req.logout();
+  res.redirect('/');
 }
 
 //function passthrough(router, path) {
@@ -137,11 +137,11 @@ function addRoutes(router) {
   router.get('/', home);
   passthrough(router, 'how_it_works');
   passthrough(router, 'who_we_are');
-  router.get('/login', showLogin)
-  router.post('/login', postLogin)
-  router.get('/signup', showSignup)
-  router.post('/signup', postSignup)
-  router.get('/afterAuth', afterAuth)
+  router.get('/login', showLogin);
+  router.post('/login', postLogin);
+  router.get('/signup', showSignup);
+  router.post('/signup', postSignup);
+  router.get('/afterAuth', afterAuth);
   router.get('/logout', logout)
 }
 
@@ -149,5 +149,5 @@ function addRoutes(router) {
 module.exports = {
   addRoutes: addRoutes
 //  , handlePending: handlePending
-}
+};
 

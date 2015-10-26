@@ -1,7 +1,7 @@
 {>"layouts/master" /}
 
 {<body}
-  <h3>Pay by Bitcoin</h3>
+  <h2>Pay by Bitcoin</h2>
 
   <b>About Bitcoin</b><br>
   blah blah blah<br>

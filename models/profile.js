@@ -13,19 +13,19 @@ var mongoose = require('mongoose');
 var baseModel = require('./baseModel');
 
 var attributes = _.merge({
-  name: String,
-  email: String,
-  phone: String,
-  address: String,
-  about: String,
-  taxId: String
+  name: String
+  , email: String
+  , phone: String
+  , address: String
+  , about: String
+  , taxId: String
 }, baseModel.baseAttributes);
 
 var modelFactory = function () {
 
   var schema = mongoose.Schema(attributes);
 
-  schema.methods.whatAmI = function () {
+  schema.methods.toString = function () {
     return 'Profile[' + this._id + ', name: ' + this.name + ']';
   };
 
