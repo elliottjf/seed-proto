@@ -17,13 +17,13 @@ var baseAttributes = {
     type: String,
     unique: true,
     'default': shortid.generate
-  },
-  createdDate: Date,
-  updatedDate: Date,
+  }
+  , createdDate: Date
+  , updatedDate: Date
   // Relation to User object via created user id
-  createdBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  , createdBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
   // Relation to User object via updated user id
-  updatedBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  , updatedBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 
   // Dynamic model data attributes
 
@@ -37,7 +37,6 @@ var baseAttributes = {
   //  return (this.updatedAt && this.updatedAt != '0000-00-00 00:00:00')
   //    ? sails.services['date'].convertDateObjectToUtc(this.updatedAt) : null;
   //}
-}
-//};
+};
 
 exports.baseAttributes = baseAttributes;

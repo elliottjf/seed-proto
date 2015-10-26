@@ -21,4 +21,6 @@ Cheffile
 Vagrantfile
 node_modules
 valuate.lock
+data/bins_iso*
+data/*.log
 *~
