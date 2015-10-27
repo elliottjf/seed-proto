@@ -18,7 +18,18 @@
       </tr>
     {/items}
   </table>
+  <br> <br>
 
-  <br/>
-  <a href="/p/edit">create new</a><br/>
+  {#user}
+    {@eq key=user.profile.memberType value="provisional"}
+      <a href="/me/pay">Become Full Member</a>
+    {:else}
+      <a href="/me">My Profile</a><br>
+      <a href="/p/edit">Submit New Proposal</a><br>
+    {/eq}
+  {:else}
+    <a href="/signup">Become a Member</a><br>
+  {/user}
+
+
 {/body}

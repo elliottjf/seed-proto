@@ -8,7 +8,33 @@
       </h2>
     </div>
 
-    blah blah blah<br>
+    <ul>
+      <li>
+        <a href="/how_it_works">How It Works</a><br>
+      </li>
+      <li>
+        <a href="/who_we_are">Who We Are</a><br>
+      </li>
+      <li>
+        <a href="/p">View Project Proposals</a><br>
+      </li>
+      {#user}
+        <li>
+          <a href="/me">My Profile</a><br>
+        </li>
+        {@eq key=user.profile.memberType value="provisional"}
+          <li>
+            <a href="/me/pay">Become Full Member</a>
+          </li>
+        {/eq}
+      {:else}
+        <li>
+          <a href="/signup">Become a Member</a><br>
+        </li>
+      {/user}
+
+    </ul>
+
 
   </div>
 
