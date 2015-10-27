@@ -28,14 +28,10 @@ $ npm install && bower install
 ```
 $ brunch build
 ```
-#### Rebuilding the static assets when modified
-```
-$ brunch watch
-```
-#### Running the server
+#### Running the server with automatic static asset rebuild
 
 ```
-$ node server
+$ brunch watch --server
 ```
 
 ### Testing
