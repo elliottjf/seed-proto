@@ -12,6 +12,7 @@
   "dependencies": {
     "JSONStream": "^1.0.6",
     "adaro": "^0.1.10",
+    "assetsmanager-brunch": "^1.8.1",
     "bcrypt": "^0.8.5",
     "bluebird": "^2.10.2",
     "braintree": "^1.29.0",
@@ -46,12 +47,18 @@
     "grunt-config-dir": "^0.3.2",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-less": "^1.0.1",
     "grunt-contrib-requirejs": "^0.4.4",
     "grunt-copy-to": "0.0.10",
     "grunt-dustjs": "^1.2.1",
     "grunt-mocha-cli": "^1.14.0",
     "mocha": "^1.18.0",
-    "supertest": "^0.9.0"
+    "supertest": "^0.9.0",
+    "babel-brunch": "^5.1.1",
+    "brunch": "^1.8.5",
+    "clean-css-brunch": ">= 1.0 < 1.8",
+    "css-brunch": ">= 1.0 < 1.8",
+    "javascript-brunch": ">= 1.0 < 1.8",
+    "sass-brunch": "^1.9.1",
+    "uglify-js-brunch": ">= 1.0 < 1.8"
   }
 }
