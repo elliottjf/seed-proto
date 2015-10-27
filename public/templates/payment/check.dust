@@ -1,16 +1,21 @@
 {>"layouts/master" /}
 
 {<body}
-  <h2>Pay by Check</h2>
+  <h2>Pay by Check - <a href="/pay/authorizeNet">Credit Card</a></h2>
 
   <fieldset>
-    {description}
+    {description}<br>
+    Amount: <b>${amount}</b>
     <br> <br>
 
     <form method="post" action="/pay/check">
       <input type="hidden" name="contributionId" value="{contributionId}"><br>
-      Confirm Amount: <input type="text" name="amount" value="{amount}"><br>
-      <br>
+      {!Confirm Amount: <input type="text" name="amount" value="{amount}"><br><br>!}
+      <input type="hidden" name="amount" value="{amount}">
+
+      {>"payment/_dwollaButton" /}
+      <br><br>
+
       <input type="radio" name="checkMethod" value="paperCheck">
       <b>Paper Check</b><br>
       Payable to: Seed Coop<br>
@@ -38,8 +43,8 @@
       <br>
       <input type="hidden" name="_csrf" value="{_csrf}">
       <input type="submit" value="Confirm Payment Sent">
-      &nbsp; &nbsp;
-      <a href="/pay">[back]</a>
+      {!&nbsp; &nbsp;!}
+      {!<a href="/pay">[back]</a>!}
     </form>
   </fieldset>
 

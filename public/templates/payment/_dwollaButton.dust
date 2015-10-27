@@ -1,0 +1,11 @@
+  <script src="https://www.dwolla.com/scripts/button.min.js" class="dwolla_button" type="text/javascript"
+          data-key="cxGFg9h4ZiG9kBCBWaMpvkYjRGJucUutjFrgg4T4OsZ8AHHZpF"
+          data-redirect="http://local.coop:8000/pay/success"
+          data-label="Dwolla E-Check"
+          data-name="Seed Coop Capital Contribution"
+          data-description="{description}"
+          data-amount="{amount}"
+          data-guest-checkout="true"
+          data-type="freetype"
+          >
+  </script>

@@ -347,7 +347,8 @@ function resolveMethod(name) {
 }
 
 function addRoutes(router) {
-  router.get('/pay', handleMissingState, showPayment);
+//  router.get('/pay', handleMissingState, showPayment);
+  router.get('/pay', handleMissingState, showCheck);
   router.post('/pay/by', handleMissingState, postPayment);
   router.get('/pay/dwolla', handleMissingState, showDwolla);
   router.get('/pay/check', handleMissingState, showCheck);
