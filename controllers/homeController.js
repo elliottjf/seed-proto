@@ -1,8 +1,9 @@
 'use strict';
 
+var _ = require('lodash');
 var mongoose = require('mongoose');
 var passport = require('passport');
-var userLib = require('../lib/user')();
+var userLib = require('../lib/user');
 var helpers = require('../lib/helpers');
 var passthrough = helpers.passthrough;
 
@@ -24,10 +25,11 @@ function buildMessages(req) {
 
   //Include any error messages that come from the login process.
   var flashError = req.flash('error');
-  console.log('flashError: [' + flashError + '], const:' + flashError.constructor);
+  console.log('flashError: [' + flashError + '], const:' + flashError.constructor + ', size: ' + flashError.length);
   if (flashError) {
-    messages.concat( flashError );
+    messages = messages.concat( flashError );  //todo: better pattern?
   }
+  console.log('messages: ' + _.inspect(messages));
   return messages;
 }
 
@@ -60,6 +62,7 @@ function postLogin(req, res) {
     , failureFlash: true
   })(req, res, function (err) {
     console.log("auth err: " + err);
+    req.flash('error', ''+err);
     res.redirect('/login');
   });
 }

@@ -15,7 +15,7 @@
 - &nbsp;
 
   {#user}
-    {email} &nbsp;
+    {profile.name} [{profile.memberType} member] &nbsp;
   <a href="/logout">logout</a>
   {:else}
   <a href="/login">login</a> &nbsp;

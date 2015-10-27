@@ -14,6 +14,7 @@ var attributes = _.merge({
   email: {type: String, unique: true}  //Ensure logins are unique.
   , authenticationData: String //We'll store bCrypt hashed passwords.
   , role: String
+  , defaultProfileId: String
   , name: String  //todo: move to Profile
 }, baseModel.baseAttributes);
 
@@ -49,6 +50,10 @@ var modelFactory = function () {
     return bcrypt.compareSync(plainText, user.authenticationData);
   };
 
+
+  schema.methods.toString = function () {
+    return 'User[' + this._id + ', email: ' + this.name + ', profileId: ' + this.defaultProfileId + ']';
+  };
 
   return mongoose.model('User', schema);
 };
