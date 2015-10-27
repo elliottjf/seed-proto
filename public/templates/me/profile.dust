@@ -1,0 +1,26 @@
+{>"layouts/master" /}
+
+{<body}
+  <h3>My Profile</h3>
+
+  {#profile}
+    Name: {name}<br>
+    Email: {email}<br>
+    Location: {location}<br>
+    About: {about}<br>
+    <br>
+    Phone: {phone}<br>
+    Address: {address}<br>
+    <br>
+    Membership Status: {memberType}<br>
+    Membership Payments: {membershipPayments}<br>
+  {/profile}
+
+  <br>
+  <br>
+  <a href="/me/pay">[pay co-op membership]</a> &nbsp;
+
+    {!<hr>!}
+    {!<a href="/vote/{_id}/delete">[delete]</a>!}
+
+{/body}

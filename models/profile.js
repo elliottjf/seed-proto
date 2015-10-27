@@ -17,9 +17,11 @@ var attributes = _.merge({
   , email: String
   , phone: String
   , address: String
+  , location: String  // publicly shared
   , about: String
   , taxId: String
   , memberType: String  //provisional, paid, other classes?
+  , membershipPayments: Number
 }, baseModel.baseAttributes);
 
 var modelFactory = function () {

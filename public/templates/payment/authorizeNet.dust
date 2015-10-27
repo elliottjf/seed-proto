@@ -11,9 +11,10 @@
   blah blah blah<br>
   <br>
 
-  Seed Coop Capital Contribution<br>
-  For Campaign: {proposalTitle}<br>
-  <br>
+  {!Seed Coop Capital Contribution<br>!}
+  {!For Campaign: {proposalTitle}!}
+  {description}
+  <br> <br>
   {!Amount: <b>${amount}</b><br><br>!}
 
   {?messages}

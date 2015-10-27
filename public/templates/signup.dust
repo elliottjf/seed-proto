@@ -4,8 +4,11 @@
   <div>
     <form id="signupForm" method="post">
       <fieldset>
-        {!<legend>Login</legend>!}
-        <h2>Signup</h2>
+        <h2>Signup as a Provisional Co-op Member</h2>
+        Once you've signed up, you'll be able to make provisional votes for proposals and engage in discussions as a
+        provisional Seed Co-op Member.<br>
+        Note, that a membership share purchase of $25 of greater is required to become a full co-op member<br>
+        <br>
         {?messages}
           <ul>
             {#messages}
@@ -15,10 +18,6 @@
           </ul>
         {/messages}
         <table>
-          {!<tr>!}
-          {!<td><label for="username">Login: </label></td>!}
-          {!<td><input id="username" name="username" type="text"/></td>!}
-          {!</tr>!}
           <tr>
             <td><label for="name">Name: </label></td>
             <td><input id="name" name="name" type="text"/></td>

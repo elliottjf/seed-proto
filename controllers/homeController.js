@@ -6,6 +6,7 @@ var passport = require('passport');
 var userLib = require('../lib/user');
 var helpers = require('../lib/helpers');
 var passthrough = helpers.passthrough;
+var curriedHandleError = _.curry(helpers.handleError);
 
 var contributionController = require('./contributionController');
 var proposalController = require('./proposalController');
@@ -17,6 +18,7 @@ var proposalController = require('./proposalController');
 
 
 function buildMessages(req) {
+  // todo: should probably separate out the different flavor of messages
   var messages = [];
   var pending = req.session.pending;
   if ( pending && pending.message && !!pending.message.trim() ) {
@@ -124,6 +126,58 @@ function postSignup(req, res) {
   })
 }
 
+function viewMyProfile(req, res) {
+  res.render('me/profile', {profile: req.user.profile});
+}
+
+function viewProfile(req, res) {
+  var profileId = req.param('profileId');
+  Profile.findOne({_id: profileId}).exec()
+    .then(function(profile) {
+      res.render('profile/view', {profile: profile});
+    })
+    .catch( curriedHandleError(req, res) );
+}
+
+function showMemberPay(req, res) {
+  res.render('me/pay', {});
+}
+
+function postMemberPay(req, res) {
+  var amount = req.body.amount;
+  req.session.cart = {
+    kind: 'membership'
+    , description: 'Membership Share Purchase'
+    , amount: amount
+    , successMethodName: 'handleMembershipPaymentSuccess'
+  };
+  res.redirect('/pay');
+}
+
+require('./paymentController').mapMethod('handleMembershipPaymentSuccess', handleMembershipPaymentSuccess);
+
+function handleMembershipPaymentSuccess(req, res) {
+  console.log('handlemembershipsuccess cart: ' + _.inspect(req.session.cart));
+  console.log('old payment total: ' + req.user.profile.membershipPayments);
+  var profile = req.user.profile; //todo: should probably refresh from db
+  var amount = Number(req.session.cart.amount);
+  profile.membershipPayments = Number(profile.membershipPayments); // be damn sure we have a number!
+  profile.membershipPayments += amount;
+  if (profile.membershipPayments >= 25 && profile.memberType === 'provisional') {
+    profile.memberType = 'full';
+  }
+  profile.save()
+    .then(function(saved) {
+      delete req.session.cart;
+      res.redirect('/me/thanks');
+    })
+    .catch(curriedHandleError(req, res));
+}
+
+function membershipThanks(req, res) {
+  res.render('me/thanks', {});
+}
+
 
 function logout(req, res) {
   req.logout();
@@ -146,6 +200,11 @@ function addRoutes(router) {
   router.get('/signup', showSignup);
   router.post('/signup', postSignup);
   router.get('/afterAuth', afterAuth);
+  router.get('/me', viewMyProfile);
+  router.get('/me/pay', showMemberPay);
+  router.post('/me/pay', postMemberPay);
+  router.get('/me/thanks', membershipThanks);
+  router.get('/m/:profileId', viewProfile);
   router.get('/logout', logout)
 }
 

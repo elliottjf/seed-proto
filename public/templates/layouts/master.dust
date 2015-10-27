@@ -15,7 +15,7 @@
 - &nbsp;
 
   {#user}
-    {profile.name} [{profile.memberType} member] &nbsp;
+    <a href="/me">{profile.name}</a> [{profile.memberType} member] &nbsp;
   <a href="/logout">logout</a>
   {:else}
   <a href="/login">login</a> &nbsp;
@@ -25,6 +25,8 @@
 <br/>
 
 <h3>Seed.Coop</h3>
+
+{!todo: incorporate generic flash message space!}
 
 <div id="wrapper">
   {+body /}

@@ -6,8 +6,8 @@
   <fieldset>
     <form method="post" action="/pay/by">
       <input type="hidden" name="contributionId" value="{contributionId}"><br>
-      Capital contribution in support of: {proposalTitle}<br/>
-      Amount: <b>${capital}</b><br>
+      {description}<br/>
+      Amount: <b>${amount}</b><br>
       <br>
       Pay By:<br>
       <input type="radio" name="paymentMethod" value="dwolla">Dwolla (E-Check)<br>

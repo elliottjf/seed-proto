@@ -1,0 +1,13 @@
+{>"layouts/master" /}
+
+{<body}
+  <h2>Thanks for your Membership Payment.<br>
+    Welcome to the Seed Solidarity Co-op!</h2>
+
+  blah blah blah<br>
+  <br>
+  <a href="/p">View Proposals</a>
+
+
+
+{/body}

@@ -122,7 +122,6 @@ function postBraintree(req, res) {
 
 function showAuthorizeNet(req, res) {
   var model = req.session.cart;
-  model.amount = model.capital;
   model.messages = req.flash('error');
   var clientToken;
 
@@ -339,29 +338,12 @@ function calculateFee(binbase, amount) {
 // bnding between session serializable names and function objects to be used as success operations
 var methodMap = {};
 
-//function initMethodMap() {
-//  console.log('initMapMethod')
-//  methodMap = {};
-//}
-
 function mapMethod(name, func) {
-  //console.log('mapMethod: ' + name + ', func: ' + func);
   methodMap[name] = func;
-  //methodMap["foo"] = theMethod;
-  ////methodMap[name] = "blah!";
-  //methodMap['fee'] = calculateFee;
-  //console.log('map methodMap: ' + _.inspect(methodMap));
-  //console.log('theMethod: ' + theMethod);
-  //console.log('[fee]: ' + methodMap['fee']);
-  //console.log('[foo]: ' + methodMap['foo']);
-  //console.log('[' + name + ']: ' + methodMap[name]);
 }
 
 function resolveMethod(name) {
-  //console.log('resolve methodMap: ' + _.inspect(methodMap));
-  //console.log("resolved: " + methodMap[name]);
   return methodMap[name];
-  //return theMethod;
 }
 
 function addRoutes(router) {
@@ -378,15 +360,10 @@ function addRoutes(router) {
   router.post('/pay/authorizeNet', handleMissingState, postAuthorizeNet);
   router.get('/pay/bitcoin', handleMissingState, showBitcoin);
 
-  //router.get('/pay/thanks', function (req, res) { res.render('payment/contribution/thanks', {}) });
   router.get('/pay/success', handleMissingState, handleSuccess);
 
   router.get('/api/binbase/:bin', fetchBinbase);
   router.get('/api/estimateFee', estimateFee);
-
-  //router.get('/c/thanks', function (req, res) { res.render('contribution/thanks', {}) });
-  //router.get('/c/:cid/thanks', function (req, res) { res.render('contribution/thanks', {}) });
-
 
 }
 
@@ -394,7 +371,6 @@ function addRoutes(router) {
 module.exports = {
   addRoutes: addRoutes
   , mapMethod: mapMethod
-  //, initMethodMap: initMethodMap
   , resolveMethod: resolveMethod
-}
+};
 

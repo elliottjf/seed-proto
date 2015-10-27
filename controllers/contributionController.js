@@ -180,6 +180,7 @@ function postContribute(req, res) {
   var patronage = req.body.patronage;
   req.session.cart = {
     kind: 'contribution'
+    , description: 'Capital contribution'  // in support of ...'
     , contributionId: contributionId
     , proposalId: proposalId
     , proposalTitle: proposalTitle

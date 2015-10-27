@@ -85,6 +85,15 @@
     //
     //            }
     //        },
+    //        "responseHooks": {
+    //            "enabled": true,
+    //            "priority": 113,
+    //            "module": {
+    //                "name":"path:./lib/auth",
+    //                "method": "responseHooks"
+    //            }
+    //        }
+
 
     //add the user to the response object
     "injectUser": {
@@ -94,15 +103,22 @@
         "name": "path:./lib/auth",
         "method": "injectUser"
       }
+    },
+
+    // note, ask joseph@colab.coop for valid dev keys
+    "stripe": {
+      "secretKey": "xxx",
+      "publicKey": "xxx"
+    },
+    "braintree": {
+      "merchantId": "xxx",
+      "publicKey": "xxx",
+      "privateKey": "xxx"
+    },
+    "authorizeNet": {
+      "apiLoginId": "xxx",
+      "transactionKey": "xxx"
     }
 
-    //        "responseHooks": {
-    //            "enabled": true,
-    //            "priority": 113,
-    //            "module": {
-    //                "name":"path:./lib/auth",
-    //                "method": "responseHooks"
-    //            }
-    //        }
   }
 }

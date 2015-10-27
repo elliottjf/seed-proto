@@ -7,9 +7,8 @@
   blah blah blah<br>
   <br>
 
-
-  Seed Coop Capital Contribution<br>
-  For Campaign: {proposalTitle}<br><br>
+  {description}
+  <br><br>
 
   <form id="checkout" method="post" action="/pay/braintree">
     <div id="payment-form"></div>

@@ -12,14 +12,14 @@
           data-redirect="http://local.coop:8000/pay/success"
           data-label="Make Payment"
           data-name="Seed Coop Capital Contribution"
-          data-description="For campaign: {proposalTitle}"
-          data-amount="{capital}"
+          data-description="{description}"
+          data-amount="{amount}"
           data-guest-checkout="true"
           data-type="freetype"
           >
   </script>
   <br>
-  <a href="/c/payment">[back]</a>
+  <a href="/pay">[back]</a>
 
 
 {/body}
