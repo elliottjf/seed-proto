@@ -1,0 +1,14 @@
+@import "../../../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap"; // Boostrap 3
+
+.navbar-nav li form {
+    display: block;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.navbar-right {
+  padding-right: 25px;
+}
+
+body { padding-top: 70px; }
+
