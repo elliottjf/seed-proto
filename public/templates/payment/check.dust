@@ -4,7 +4,7 @@
   <h2>Pay by Check</h2>
 
   <fieldset>
-    <form method="post" action="/c/paymentCheck">
+    <form method="post" action="/pay/check">
       <input type="hidden" name="contributionId" value="{contributionId}"><br>
       Confirm Amount: <input type="text" name="amount" value="{capital}"><br>
       <br>

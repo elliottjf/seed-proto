@@ -11,7 +11,7 @@
   Seed Coop Capital Contribution<br>
   For Campaign: {proposalTitle}<br><br>
 
-  <form id="checkout" method="post" action="/c/paymentBraintree">
+  <form id="checkout" method="post" action="/pay/braintree">
     <div id="payment-form"></div>
     <input type="hidden" name="_csrf" value="{_csrf}">
     <input type="hidden" name="amount" value="{amount}">
@@ -29,7 +29,7 @@
 
 
   <br> <br>
-  <a href="/c/payment">[back]</a>
+  <a href="/pay">[back]</a>
 
 
 {/body}
