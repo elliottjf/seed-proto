@@ -9,7 +9,7 @@
 
   <script src="https://www.dwolla.com/scripts/button.min.js" class="dwolla_button" type="text/javascript"
           data-key="cxGFg9h4ZiG9kBCBWaMpvkYjRGJucUutjFrgg4T4OsZ8AHHZpF"
-          data-redirect="http://local.coop:8000/c/thanks"
+          data-redirect="http://local.coop:8000/pay/success"
           data-label="Make Payment"
           data-name="Seed Coop Capital Contribution"
           data-description="For campaign: {proposalTitle}"

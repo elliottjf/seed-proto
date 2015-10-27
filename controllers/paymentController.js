@@ -18,7 +18,7 @@ var Binbase = require('../models/binbase');
  * otherwise, redirects to safe home and short curcuits flow
  */
 function handleMissingState(req, res, next) {
-  if (req.session.pending) {
+  if (req.session.cart) {
     next(); // proceed with normal flow
   } else {
     console.error("payment flow - missing pending state");
@@ -28,8 +28,7 @@ function handleMissingState(req, res, next) {
 
 
 function showPayment(req, res) {
-//  var model = {pending: req.session.pending}
-  var model = req.session.pending;
+  var model = req.session.cart;
   model.messages = req.flash('error');
   res.render('payment/index', model);
 }
@@ -40,15 +39,14 @@ function postPayment(req, res) {
 }
 
 function showDwolla(req, res) {
-  var model = req.session.pending;
+  var model = req.session.cart;
   model.messages = req.flash('error');
   res.render('payment/dwolla', model);
 }
 
 function showStripe(req, res) {
-  var model = req.session.pending;
-  model.amount = model.capital;
-  model.amountCents = model.capital * 100;
+  var model = req.session.cart;
+  model.amountCents = model.amount * 100;
   model.publicKey = stripe.config.publicKey;
   model.messages = req.flash('error');
   res.render('payment/stripe', model);
@@ -74,8 +72,7 @@ function postStripe(req, res) {
       req.flash('error', "Sorry, that card has been declined");
       res.redirect('/pay/stripe');
     } else if (charge) {
-      //res.redirect('/pay/thanks');
-      handleThanks(req, res);
+      handleSuccess(req, res);
     } else {
       req.flash('error', 'Sorry, there was an unexpected error: ' + err);
       res.redirect('/pay/stripe');
@@ -85,13 +82,11 @@ function postStripe(req, res) {
 
 
 function showBraintree(req, res) {
-  var model = req.session.pending;
-  model.amount = model.capital;
-//    model.amountCents = model.capital * 100
+  var model = req.session.cart;
   model.messages = req.flash('error');
   var clientToken;
 
-  console.log('braintree: ' + _.inspect(braintree));;
+  console.log('braintree: ' + _.inspect(braintree));
   braintree.clientToken.generate({}, function (err, result) {
     model.clientToken = result.clientToken;
     console.log('clientToken: ' + clientToken);
@@ -117,8 +112,7 @@ function postBraintree(req, res) {
       req.flash('error', "Sorry, that card has been declined");
       res.redirect('/pay/braintree')
     } else if (result) {
-      //res.redirect('/pay/thanks');;
-      handleThanks(req, res); //todo: should probably be calling upsert...
+      handleSuccess(req, res);
     } else {
       req.flash('error', 'Sorry, there was an unexpected error: ' + err);
       res.redirect('/pay/braintree');
@@ -127,7 +121,7 @@ function postBraintree(req, res) {
 }
 
 function showAuthorizeNet(req, res) {
-  var model = req.session.pending;
+  var model = req.session.cart;
   model.amount = model.capital;
   model.messages = req.flash('error');
   var clientToken;
@@ -149,8 +143,8 @@ function postAuthorizeNet(req, res) {
       console.log('authorize.net response - transaction: ' + _.inspect(transaction));
 
       if (transaction.transactionResponse.responseCode == 1) {
-        //todo store transaction record
-        upsertPendingContribution(req, res);
+        handleSuccess(req, res);
+        //handleContributionPaymentSuccess(req, res);
 //        res.redirect('/c/thanks');
       } else {
         // not sure if this flow is possible or not
@@ -179,7 +173,7 @@ function postAuthorizeNet(req, res) {
 
 
 function showCheck(req, res) {
-  var model = req.session.pending;
+  var model = req.session.cart;
   console.log('showCheck - model: ' + _.inspect(model));
   model.messages = req.flash('error');
   res.render('payment/check', model);
@@ -187,61 +181,77 @@ function showCheck(req, res) {
 
 function postCheck(req, res) {
   console.log("postCheck");
-  // todo: factor the post payment updates
-  upsertPendingContribution(req, res);
+  handleSuccess(req, res);
 }
 
-function upsertPendingContribution(req, res) {
-  console.log('pending: ' + _.inspect(req.session.pending));
-  var contributionId = req.session.pending.contributionId;
-  var proposalId = req.session.pending.proposalId;
-  var capital = req.session.pending.capital;
-  var patronage = req.session.pending.patronage;
-
-  //todo: delete after displaying 'thanks' page
-  //delete req.session.pending;
-
-  if (contributionId) {
-    // updated existing pledge record
-    Contribution.findOne({_id: contributionId}).exec()
-      .then(function (contribution) {
-        contribution.paidCapital = capital;
-        contribution.paidPatronage = patronage;
-        return contribution.save();
-      }).then(function (contribution) {
-        //res.redirect('/c/' + contribution._id + '/thanks');
-        //res.redirect('/pay/thanks');
-        handleThanks(req, res);
-      })
-      .catch(curriedHandleError(req, res));
+//function handleContributionPaymentSuccess(req, res) {
+//  console.log('pending: ' + _.inspect(req.session.pending));
+//  var contributionId = req.session.pending.contributionId;
+//  var proposalId = req.session.pending.proposalId;
+//  var capital = req.session.pending.capital;
+//  var patronage = req.session.pending.patronage;
+//
+//  //todo: delete after displaying 'thanks' page
+//  //delete req.session.pending;
+//
+//  if (contributionId) {
+//    // updated existing pledge record
+//    Contribution.findOne({_id: contributionId}).exec()
+//      .then(function (contribution) {
+//        contribution.paidCapital = capital;
+//        contribution.paidPatronage = patronage;
+//        return contribution.save();
+//      }).then(function (contribution) {
+//        //res.redirect('/c/' + contribution._id + '/thanks');
+//        //res.redirect('/pay/thanks');
+//        handleThanks(req, res);
+//      })
+//      .catch(curriedHandleError(req, res));
+//  } else {
+//    // no pledge context, create a new contribution record
+//    var contribution = new Contribution({
+//      proposalId: proposalId
+//      , paidCapital: capital
+////      , paidPatronage: patronage
+//      , userId: req.user._id
+//      , userName: req.user.name
+//    });
+//    contribution.save()
+//      .then(function (saved) {
+//        req.session.pending.contributionId = saved._id;
+//        //res.redirect('/c/' + saved._id + '/thanks');
+////        res.redirect('/pay/thanks');
+//        handleThanks(req, res);
+//      })
+//      .catch(curriedHandleError(req, res))
+//  }
+//}
+//
+function handleSuccess(req, res) {
+  console.log('handleSuccess - cart:' + _.inspect(req.session.cart));
+  console.log('methodMap: ' + _.inspect(methodMap));
+  var methodName = req.session.cart.successMethodName;
+  if (methodName) {
+    var func = resolveMethod(methodName);
+    if (func) {
+      func(req, res);
+    } else {
+      throw new Error('unable to resolve method name: ' + methodName);
+    }
+  } else if (req.session.cart.successUrl) {
+    console.log('handle successUrl:' + req.session.cart.successUrl);
+    res.redirect(req.session.cart.successUrl);
   } else {
-    // no pledge context, create a new contribution record
-    var contribution = new Contribution({
-      proposalId: proposalId
-      , paidCapital: capital
-//      , paidPatronage: patronage
-      , userId: req.user._id
-      , userName: req.user.name
-    });
-    contribution.save()
-      .then(function (saved) {
-        req.session.pending.contributionId = saved._id;
-        //res.redirect('/c/' + saved._id + '/thanks');
-//        res.redirect('/pay/thanks');
-        handleThanks(req, res);
-      })
-      .catch(curriedHandleError(req, res))
+    throw new Error('missing success hook - cart');
+    //if (req.session.cart.kind == 'contribution') {
+    //  console.log('no cart success method or url - using hardwired logic');
+    //  require('./contributionController').handleContributionPaymentSuccess(req, res);
+    //}
   }
 }
 
-function handleThanks(req, res) {
-  var contributionId = req.session.pending.contributionId; //todo: generic handling
-  res.redirect('/c/' + contributionId + '/thanks');
-
-}
-
 function showBitcoin(req, res) {
-  var model = req.session.pending;
+  var model = req.session.cart;
   model.messages = req.flash('error');
   res.render('payment/bitcoin', model);
 }
@@ -326,6 +336,34 @@ function calculateFee(binbase, amount) {
 }
 
 
+// bnding between session serializable names and function objects to be used as success operations
+var methodMap = {};
+
+//function initMethodMap() {
+//  console.log('initMapMethod')
+//  methodMap = {};
+//}
+
+function mapMethod(name, func) {
+  //console.log('mapMethod: ' + name + ', func: ' + func);
+  methodMap[name] = func;
+  //methodMap["foo"] = theMethod;
+  ////methodMap[name] = "blah!";
+  //methodMap['fee'] = calculateFee;
+  //console.log('map methodMap: ' + _.inspect(methodMap));
+  //console.log('theMethod: ' + theMethod);
+  //console.log('[fee]: ' + methodMap['fee']);
+  //console.log('[foo]: ' + methodMap['foo']);
+  //console.log('[' + name + ']: ' + methodMap[name]);
+}
+
+function resolveMethod(name) {
+  //console.log('resolve methodMap: ' + _.inspect(methodMap));
+  //console.log("resolved: " + methodMap[name]);
+  return methodMap[name];
+  //return theMethod;
+}
+
 function addRoutes(router) {
   router.get('/pay', handleMissingState, showPayment);
   router.post('/pay/by', handleMissingState, postPayment);
@@ -341,6 +379,7 @@ function addRoutes(router) {
   router.get('/pay/bitcoin', handleMissingState, showBitcoin);
 
   //router.get('/pay/thanks', function (req, res) { res.render('payment/contribution/thanks', {}) });
+  router.get('/pay/success', handleMissingState, handleSuccess);
 
   router.get('/api/binbase/:bin', fetchBinbase);
   router.get('/api/estimateFee', estimateFee);
@@ -354,5 +393,8 @@ function addRoutes(router) {
 
 module.exports = {
   addRoutes: addRoutes
+  , mapMethod: mapMethod
+  //, initMethodMap: initMethodMap
+  , resolveMethod: resolveMethod
 }
 

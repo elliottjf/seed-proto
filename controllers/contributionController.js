@@ -93,7 +93,6 @@ function postPledge(req, res) {
         res.redirect('/signup');
       } else {
         handlePledgeSuccess(req, res, contribution);
-//        res.redirect('/c/contribute?pid=' + contribution.proposalId + 'cid=' + contribution._id + '&la=p');
       }
 
     })
@@ -101,7 +100,8 @@ function postPledge(req, res) {
 }
 
 function handlePledgeSuccess(req, res, contribution) {
-  var path = '/c/contribute?pid=' + contribution.proposalId + '&cid=' + contribution._id + '&la=pledge';
+  //var path = '/c/contribute?pid=' + contribution.proposalId + '&cid=' + contribution._id + '&la=pledge';
+  var path = '/p/' + contribution.proposalId + '/contribute?cid=' + contribution._id + '&la=pledge';
   res.redirect(path)
 
 }
@@ -116,6 +116,7 @@ function handlePending(req, res) {
 
   console.log('pending action: ' + pending.action);
 
+  // factor state validation into route mappings
   if ( ! req.user ) {
     throw new Error('unexpected missing user context')
   }
@@ -136,13 +137,14 @@ function handlePending(req, res) {
       .catch(curriedHandleError(req, res));
     return true;
   } else if (pending.action == 'contribute') {
-    // todo, this currently leaves the 'session.pending' state.  we should delete and create new session.payment state
+    delete req.session.pending;
     res.redirect('/pay');
     return true;
   } else {
     return false;
   }
 }
+
 
 function showContribute(req, res) {
   var proposalId = req.param('pid');
@@ -176,43 +178,61 @@ function postContribute(req, res) {
   var proposalTitle = req.body.proposalTitle;
   var capital = req.body.capital;
   var patronage = req.body.patronage;
-  req.session.pending = {
-    action: 'contribute'
+  req.session.cart = {
+    kind: 'contribution'
     , contributionId: contributionId
     , proposalId: proposalId
     , proposalTitle: proposalTitle
-    , capital: capital
-    , patronage: patronage
-    , message: 'please signin or login to complete your contribution'
+    , amount: capital
+    , capital: capital  // todo: remove usages
+    , successMethodName: 'handleContributionPaymentSuccess'
+    //, successUrl: '/c/' + contributionId + '/thanks'
+    //, patronage: patronage
   };
 
   if (! req.user) {
-    console.error("post contribution - need to bind supporter");
+    console.info("post contribution - need to bind supporter");
+    req.session.pending = {
+      //todo: can eliminate some of these fields, need to factor over usage to cart session model
+      action: 'contribute'
+      , contributionId: contributionId
+      , proposalId: proposalId
+      , proposalTitle: proposalTitle
+      , capital: capital
+      , patronage: patronage
+      , message: 'please signin or login to complete your contribution'
+    };
     res.redirect('/signup');
   } else {
     res.redirect('/pay');
   }
 }
 
+require('./paymentController').mapMethod('handleContributionPaymentSuccess', handleContributionPaymentSuccess);
 
-function upsertPendingContribution(req, res) {
-  console.log('pending: ' + _.inspect(req.session.pending));
-  var contributionId = req.session.pending.contributionId;
-  var proposalId = req.session.pending.proposalId;
-  var capital = req.session.pending.capital;
-  var patronage = req.session.pending.patronage;
 
-  delete req.session.pending;
+
+function handleContributionPaymentSuccess(req, res) {
+  console.log('handlepaymentsuccess cart: ' + _.inspect(req.session.cart));
+  var contributionId = req.session.cart.contributionId;
+  var proposalId = req.session.cart.proposalId;
+  //todo: switch on cart.kind - for now only capital contribution
+  var capital = req.session.cart.amount;
+  //var patronage = req.session.pending.patronage;
+
+  //delete req.session.cart;
 
   if (contributionId) {
     // updated existing pledge record
     Contribution.findOne({_id: contributionId}).exec()
       .then(function (contribution) {
         contribution.paidCapital = capital;
-        contribution.paidPatronage = patronage;
+        //contribution.paidPatronage = patronage;
         return contribution.save();
       }).then(function (contribution) {
-        res.redirect('/c/' + contribution._id + '/thanks');
+        //res.redirect('/c/' + contribution._id + '/thanks');
+        //res.redirect(cart.successUrl);
+        gotoThanks(req, res, contribution);
       })
       .catch(curriedHandleError(req, res));
   } else {
@@ -226,10 +246,17 @@ function upsertPendingContribution(req, res) {
     });
     contribution.save()
       .then(function (saved) {
-        res.redirect('/c/' + saved._id + '/thanks');
+        //res.redirect('/c/' + saved._id + '/thanks');
+        gotoThanks(req, res, saved);
       })
       .catch(curriedHandleError(req, res))
   }
+}
+
+function gotoThanks(req, res, contribution) {
+  delete req.session.cart;
+  res.redirect('/c/' + contribution._id + '/thanks');
+
 }
 
 
@@ -244,33 +271,22 @@ function addRoutes(router) {
   router.get('/c/contribute', showContribute);
   router.get('/p/:pid/contribute', showContribute);
   router.post('/c/contribute', postContribute);
-  //router.get('/c/payment', showPayment);
-  //router.get('/c/:pid/payment', showPayment);
-  //router.post('/c/payment', postPayment);
-  //router.get('/c/paymentDwolla', showDwolla);
-  //router.get('/c/paymentCheck', showCheck);
-  //router.post('/c/paymentCheck', postCheck);
-  //router.get('/c/paymentStripe', showStripe);
-  //router.post('/c/paymentStripe', postStripe);
-  //router.get('/c/paymentBraintree', showBraintree);
-  //router.post('/c/paymentBraintree', postBraintree);
-  //router.get('/c/paymentAuthorizeNet', showAuthorizeNet);
-  //router.post('/c/paymentAuthorizeNet', postAuthorizeNet);
-  //router.get('/c/paymentBitcoin', showBitcoin);
-  //
-  //router.get('/api/binbase/:bin', fetchBinbase);
-  //router.get('/api/estimateFee', estimateFee);
-
-//  passthrough(router, 'c/thanks');
-  router.get('/c/thanks', function (req, res) { res.render('contribution/thanks', {}) });
+  //router.get('/c/thanks', function (req, res) { res.render('contribution/thanks', {}) });
   router.get('/c/:cid/thanks', function (req, res) { res.render('contribution/thanks', {}) });
-
-
 }
+
+
 
 
 module.exports = {
   addRoutes: addRoutes
   , handlePending: handlePending
-}
+  , handleContributionPaymentSuccess: handleContributionPaymentSuccess
+};
+
+// create serializable binding to success method, since we can't store methods directly in the session
+//require('./paymentController').mapMethod('handleContributionPaymentSuccess', module.exports.handleContributionPaymentSuccess);
+//var paymentController = require('./paymentController');
+//paymentController.mapMethod('handleContributionPaymentSuccess', module.exports.handleContributionPaymentSuccess);
+//console.log("resolved: " + paymentController.resolveMethod('handleContributionPaymentSuccess'));
 
