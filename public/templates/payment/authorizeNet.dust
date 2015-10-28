@@ -42,7 +42,11 @@
     <input type="hidden" name="_csrf" value="{_csrf}">
     <input type="submit" value="Complete Payment">
   </form>
-  <script>registerHooks()</script>
+  <script>
+    document.addEventListener( "DOMContentLoaded", 
+                               (e) => require('public/js/card').registerHooks(),
+                               false);
+  </script>
 
   {!<br>!}
   {!<a href="javascript:test3()">test</a>!}
