@@ -22,7 +22,7 @@ var attributes = {
   , countryIso: String   // i.e. US
   , orgWebsite: String  // i.e. HTTP://WWW.ARTISANSBANK.COM
   , orgPhone: String   // i.e. 302-658-6881
-  , orgId: String      // todo sort out propertly relation refs
+  , orgRef: {type: String, ref: 'Profile'}
   , isRegulated: Boolean
 };
 

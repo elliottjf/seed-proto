@@ -74,6 +74,7 @@ function postLogin(req, res) {
  * handles any needed post login/signup logic
  */
 function afterAuth(req, res) {
+  //todo: use same methodMap approach as with the payment success
   if (proposalController.handlePending(req, res)) {
     return
   }
@@ -184,12 +185,6 @@ function logout(req, res) {
   res.redirect('/');
 }
 
-//function passthrough(router, path) {
-//  router.get('/' + path, function (req, res) {
-//    res.render(path, {});
-//  });
-//}
-
 
 function addRoutes(router) {
   router.get('/', home);
@@ -211,6 +206,5 @@ function addRoutes(router) {
 
 module.exports = {
   addRoutes: addRoutes
-//  , handlePending: handlePending
 };
 

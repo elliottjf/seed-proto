@@ -1,8 +1,8 @@
 {>"layouts/master" /}
 
 {<body}
-  
-  <h2>Pay By Credit Card - <a href="/pay/check">Check</a></h2>
+
+  <h2>Pay By Credit Card / <a href="/pay/check">Check</a></h2>
 
   <b>About Credit Cards</b><br>
   blah blah blah<br>
@@ -43,7 +43,7 @@
     <input type="submit" value="Complete Payment">
   </form>
   <script>
-    document.addEventListener( "DOMContentLoaded", 
+    document.addEventListener( "DOMContentLoaded",
                                (e) => require('public/js/card').registerHooks(),
                                false);
   </script>

@@ -12,8 +12,8 @@
     Anticipated Customer Patronage: {anticipatedPatronage}<br>
     Worker Interest: {workerInterest}<br>
     <br>
-    <a href="/p/{proposalId}/pledge?vid={_id}">[make pledge]</a> &nbsp;
-    <a href="/p/{proposalId}/view">[back]</a><br/>
+    <a href="/p/{proposalRef}/pledge?vid={_id}">[make pledge]</a> &nbsp;
+    <a href="/p/{proposalRef}/view">[back]</a><br/>
     <br>
 
     <hr>

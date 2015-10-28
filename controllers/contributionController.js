@@ -71,15 +71,16 @@ function postPledge(req, res) {
   var pledgedPatronage = req.body.pledgedPatronage;
 
   var contribution = new Contribution({
-    proposalId: proposalId
+    proposalRef: proposalId
     , pledgedCapital: pledgedCapital
     , pledgedPatronage: pledgedPatronage
   });
   if (req.user) {
-    contribution.userId = req.user._id;
-    contribution.userName = req.user.name;
+    //contribution.userId = req.user._id;
+    //contribution.userName = req.user.name;
+    contribution.profileRef = req.user.profile._id;
 
-    console.log("userid: " + contribution.userId);
+    console.log("profileRef: " + contribution.profileRef);
   }
 
   contribution.save()
@@ -101,7 +102,7 @@ function postPledge(req, res) {
 
 function handlePledgeSuccess(req, res, contribution) {
   //var path = '/c/contribute?pid=' + contribution.proposalId + '&cid=' + contribution._id + '&la=pledge';
-  var path = '/p/' + contribution.proposalId + '/contribute?cid=' + contribution._id + '&la=pledge';
+  var path = '/p/' + contribution.proposalRef + '/contribute?cid=' + contribution._id + '&la=pledge';
   res.redirect(path)
 
 }
@@ -125,9 +126,9 @@ function handlePending(req, res) {
     delete req.session.pending;
     Contribution.findOne({_id: pending.contributionId}).exec()
       .then(function (contribution) {
-        contribution.userId = req.user._id;
-        contribution.userName = req.user.name;
-        console.log("userid: " + contribution.userId);
+        contribution.profileRef = req.user.profile._id;
+        //contribution.userName = req.user.name;
+        console.log("supporterRef: " + contribution.profileRef);
         return contribution.save();
       }).then(function (contribution) {
         if (pending.action == 'pledge') {
@@ -239,11 +240,11 @@ function handleContributionPaymentSuccess(req, res) {
   } else {
     // no pledge context, create a new contribution record
     var contribution = new Contribution({
-      proposalId: proposalId
+      proposalRef: proposalId
       , paidCapital: capital
 //      , paidPatronage: patronage
-      , userId: req.user._id
-      , userName: req.user.name
+      , profileRef: req.user.profile._id
+      //, userName: req.user.name
     });
     contribution.save()
       .then(function (saved) {

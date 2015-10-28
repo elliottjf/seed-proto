@@ -4,7 +4,7 @@
 'use strict';
 var _ = require('lodash');
 var Promise = require("bluebird");
-var mongoose = Promise.promisifyAll(require("mongoose"));
+var mongoose = require("mongoose");
 var bcrypt = require('bcrypt');
 var crypto = require('../lib/crypto');
 var baseModel = require('./baseModel');
@@ -14,7 +14,8 @@ var attributes = _.merge({
   email: {type: String, unique: true}  //Ensure logins are unique.
   , authenticationData: String //We'll store bCrypt hashed passwords.
   , role: String
-  , defaultProfileId: String
+  //, defaultProfileId: String
+  , defaultProfileRef: {type: String, ref: 'Profile'}
   , name: String  //todo: move to Profile
 }, baseModel.baseAttributes);
 
@@ -52,7 +53,7 @@ var modelFactory = function () {
 
 
   schema.methods.toString = function () {
-    return 'User[' + this._id + ', email: ' + this.name + ', profileId: ' + this.defaultProfileId + ']';
+    return 'User[' + this._id + ', email: ' + this.name + ', profile: ' + this.defaultProfileRef + ']';
   };
 
   return mongoose.model('User', schema);

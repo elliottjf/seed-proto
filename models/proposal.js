@@ -13,7 +13,8 @@ var baseModel = require('./baseModel');
 
 
 var attributes = _.merge({
-  title: String
+  profileRef: {type: String, ref: 'Profile'}
+  , title: String
   , summary: String
 }, baseModel.baseAttributes);
 
@@ -24,10 +25,6 @@ var modelFactory = function () {
   schema.methods.toString = function () {
     return 'Proposal[' + this._id + ', title: ' + this.title + ']';
   };
-
-  //schema.methods.prettyPrice = function () {
-  //    return (this && this.price) ? '$' + this.price.toFixed(2) : '$';
-  //};
 
   return mongoose.model('Proposal', schema);
 

@@ -11,7 +11,8 @@ var mongoose = require('mongoose');
 var baseModel = require('./baseModel');
 
 var attributes = _.merge({
-  contribution: {type: mongoose.Schema.Types.ObjectId, ref: 'Contribution'}
+  profileRef: {type: String, ref: 'Profile'}
+  , contributionRef: {type: String, ref: 'Contribution'}
   , date: Date
   , amount: Number  //better fixed precision data type?
   //, paymentSource

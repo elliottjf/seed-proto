@@ -24,5 +24,5 @@ valuate.lock
 data/bins_iso*
 data/*.log
 *~
-/bower_components/
-/static/
+bower_components/
+static/

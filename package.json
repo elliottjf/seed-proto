@@ -5,6 +5,7 @@
   "author": "Joseph Elliott",
   "main": "index.js",
   "scripts": {
+    "start": "brunch watch --server",
     "test": "grunt test",
     "build": "grunt build",
     "all": "npm run build && npm run test"

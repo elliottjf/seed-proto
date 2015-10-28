@@ -11,18 +11,17 @@ var mongoose = require('mongoose');
 var baseModel = require('./baseModel');
 
 var attributes = _.merge({
-  //todo: figure out how to make mongoose relationships work with the short ids
-  supporter: {type: mongoose.Schema.Types.ObjectId, ref: 'Profile'}
-  , proposal: {type: mongoose.Schema.Types.ObjectId, ref: 'Proposal'}
-  , userId: String
-  , userName: String  //denormalized for now
-  , supporterId: String
-  , proposalId: String
+  profileRef: {type: String, ref: 'Profile'}
+  , proposalRef: {type: String, ref: 'Proposal'}
+  //, userId: String
+  //, userName: String  //denormalized for now
+  //, supporterId: String
+  //, proposalId: String
   , voteRank: Number
   , anticipatedCapital: Number
   , anticipatedPatronage: Number
-  , pledgedCapital: Number
-  , pledgedPatronage: Number
+  //, pledgedCapital: Number
+  //, pledgedPatronage: Number
   , workerInterest: String
 }, baseModel.baseAttributes);
 

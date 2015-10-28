@@ -21,9 +21,9 @@ var baseAttributes = {
   , createdDate: Date
   , updatedDate: Date
   // Relation to User object via created user id
-  , createdBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
+  , createdByRef: {type: String, ref: 'User'}
   // Relation to User object via updated user id
-  , updatedBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
+  , updatedByRef: {type: String, ref: 'User'}
 
   // Dynamic model data attributes
 

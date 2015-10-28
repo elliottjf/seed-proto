@@ -6,9 +6,6 @@
   {#item}
     {>"proposal/_summary"/}
     {>"proposal/_actions"/}
-    {!<a href="/p/{_id}/vote">[vote]</a> &nbsp;!}
-    {!<a href="/p/{_id}/pledge">[pledge]</a> &nbsp;!}
-    {!<a href="/p/{_id}/contribute">[contribute]</a>!}
   {/item}
 
   <br/>
@@ -20,7 +17,7 @@
   {#votes}
     <tr>
       <td>
-        {userName}
+        {profileRef.name}
       </td>
       <td>
         {voteRank}
@@ -48,7 +45,7 @@
     {#contributions}
       <tr>
         <td>
-          {userName}
+          {profileRef.name}
         </td>
         <td>
           {pledgedCapital}

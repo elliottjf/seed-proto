@@ -12,12 +12,12 @@ var mongoose = require('mongoose');
 var baseModel = require('./baseModel');
 
 var attributes = _.merge({
-  supporter: {type: mongoose.Schema.Types.ObjectId, ref: 'Profile'}
-  , proposal: {type: mongoose.Schema.Types.ObjectId, ref: 'Proposal'}
-  , userId: String
-  , userName: String  //denormalized for now
-  , supporterId: String
-  , proposalId: String
+  profileRef: {type: String, ref: 'Profile'}
+  , proposalRef: {type: String, ref: 'Proposal'}
+  //, userRef: String
+  //, userName: String  //denormalized for now
+  //, supporterId: String
+  //, proposalId: String
   , description: String
   //better fixed precision data type?
   , pledgedCapital: Number

@@ -183,49 +183,8 @@ function postCheck(req, res) {
   handleSuccess(req, res);
 }
 
-//function handleContributionPaymentSuccess(req, res) {
-//  console.log('pending: ' + _.inspect(req.session.pending));
-//  var contributionId = req.session.pending.contributionId;
-//  var proposalId = req.session.pending.proposalId;
-//  var capital = req.session.pending.capital;
-//  var patronage = req.session.pending.patronage;
-//
-//  //todo: delete after displaying 'thanks' page
-//  //delete req.session.pending;
-//
-//  if (contributionId) {
-//    // updated existing pledge record
-//    Contribution.findOne({_id: contributionId}).exec()
-//      .then(function (contribution) {
-//        contribution.paidCapital = capital;
-//        contribution.paidPatronage = patronage;
-//        return contribution.save();
-//      }).then(function (contribution) {
-//        //res.redirect('/c/' + contribution._id + '/thanks');
-//        //res.redirect('/pay/thanks');
-//        handleThanks(req, res);
-//      })
-//      .catch(curriedHandleError(req, res));
-//  } else {
-//    // no pledge context, create a new contribution record
-//    var contribution = new Contribution({
-//      proposalId: proposalId
-//      , paidCapital: capital
-////      , paidPatronage: patronage
-//      , userId: req.user._id
-//      , userName: req.user.name
-//    });
-//    contribution.save()
-//      .then(function (saved) {
-//        req.session.pending.contributionId = saved._id;
-//        //res.redirect('/c/' + saved._id + '/thanks');
-////        res.redirect('/pay/thanks');
-//        handleThanks(req, res);
-//      })
-//      .catch(curriedHandleError(req, res))
-//  }
-//}
-//
+
+
 function handleSuccess(req, res) {
   console.log('handleSuccess - cart:' + _.inspect(req.session.cart));
   console.log('methodMap: ' + _.inspect(methodMap));

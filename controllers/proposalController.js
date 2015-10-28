@@ -29,11 +29,11 @@ function view(req, res) {
     .then(function(item) {
       proposal = item;
       model.item = item;
-      return Vote.find({proposalId: proposal._id});
+      return Vote.find({proposalRef: proposal._id}).populate('profileRef');
     })
     .then(function (votes) {
       model.votes = votes;
-      return Contribution.find({proposalId: proposal._id});
+      return Contribution.find({proposalRef: proposal._id}).populate('profileRef');
     })
     .then(function (contributions) {
       model.contributions = contributions;
@@ -59,7 +59,7 @@ function postEdit(req, res) {
   //    return;
   //}
 
-  var item = new Proposal({title: title, summary: summary});
+  var item = new Proposal({ownerRef: req.user.profile._id, title: title, summary: summary});
   console.log("item: " + item);
   item.save()
     .then(function() {
@@ -79,7 +79,7 @@ function deleteProposal(req, res) {
 
 function showVote(req, res) {
   var id = req.param('pid');
-  Proposal.findOne({_id: id}).exec()
+  Proposal.findOne({_id: id}).populate('profileRef').exec()
     .then(function (proposal) {
       var model = {proposal: proposal, item: {}};
       // todo: validation and error message handling
@@ -103,11 +103,12 @@ function postVote(req, res) {
 //    var _id = new mongoose.Types.ObjectId(proposalId);
 //    console.log("_id: " + _id);
 //    model.proposal = _id;
-  model.proposalId = proposalId;
+  model.proposalRef = proposalId;
   if (req.user) {
-    console.log("userId: " + req.user._id);
-    model.userId = req.user._id;
-    model.userName = req.user.name;
+    console.log("userId: " + req.user._id + ', profile: ' + req.user.profile);
+    model.profileRef = req.user.profile._id;
+    //model.userId = req.user._id;
+    //model.userName = req.user.name;
   }
 
   Vote.create(model)
@@ -125,7 +126,7 @@ function postVote(req, res) {
 
 function handleVoteSuccess(req, res, vote) {
 //  var path = '/c/pledge?pid=' + vote.proposalId + '&la=vote';
-  var path = '/p/' + vote.proposalId + '/pledge?la=vote&vid=' + vote._id;
+  var path = '/p/' + vote.proposalRef + '/pledge?la=vote&vid=' + vote._id;
   res.redirect(path);
 
 }
@@ -149,9 +150,10 @@ function handlePending(req, res) {
 
   Vote.findOne({_id: pending.voteId}).exec()
     .then(function (item) {
-      item.userId = req.user._id;
-      item.userName = req.user.name;
-      console.log("userid: " + item.userId);
+      //item.userId = req.user._id;
+      //item.userName = req.user.name;
+      item.profileRef = req.user.profile._id;
+      console.log("profileRef: " + item.profileRef);
       return item.save();
     }).then(function (item) {
       handleVoteSuccess(req, res, item);
@@ -167,10 +169,10 @@ function voteView(req, res) {
   //res.render('proposal/view', model);
   var id = req.param('id');
   var  model = {};
-  Vote.findOne({_id: id}).exec()
+  Vote.findOne({_id: id}).populate('profileRef proposalRef').exec()
     .then(function(item) {
       model.item = item;
-      return Proposal.findOne({_id: item.proposalId});
+      return Proposal.findOne({_id: item.proposalRef}); //~~~
     })
     .then(function(proposal) {
       model.proposal = proposal;
