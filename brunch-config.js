@@ -48,6 +48,11 @@ exports.config = {
         'fonts': ['bower_components/bootstrap-sass/assets/fonts/bootstrap/*']
       }
     }
+  },
+
+  server: {
+    path: 'brunch-server.js',
+    port: 8000
   }
 
 };
