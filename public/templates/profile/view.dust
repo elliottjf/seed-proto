@@ -4,19 +4,15 @@
   <h3>Member Profile</h3>
 
   {#profile}
+    Name: {name}<br>
+    Email: {email}<br>
+    Location: {location}<br>
+    About: {about}<br>
+    <br>
+    {!Phone: {phone}<br>!}
+    {!Address: {address}<br>!}
+    {!<br>!}
+    Membership Status: {memberType}<br>
   {/profile}
-
-    Supporter: {userName}<br/>
-    Vote Rank: {voteRank}<br/>
-    Anticipated Capital Contribution: {anticipatedCapital}<br>
-    Anticipated Customer Patronage: {anticipatedPatronage}<br>
-    Worker Interest: {workerInterest}<br>
-    <br>
-    <a href="/p/{proposalRef}/pledge?vid={_id}">[make pledge]</a> &nbsp;
-    <a href="/p/{proposalRef}/view">[back]</a><br/>
-    <br>
-
-    <hr>
-    <a href="/vote/{_id}/delete">[delete]</a>
 
 {/body}

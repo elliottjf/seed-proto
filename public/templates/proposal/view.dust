@@ -17,7 +17,7 @@
   {#votes}
     <tr>
       <td>
-        {profileRef.name}
+        <a href="/m/{profileRef._id}">{profileRef.name}</a> {@eq key=profileRef.memberType value="provisional"} [{profileRef.memberType}] {/eq}
       </td>
       <td>
         {voteRank}
@@ -45,7 +45,7 @@
     {#contributions}
       <tr>
         <td>
-          {profileRef.name}
+          <a href="/m/{profileRef._id}">{profileRef.name}</a> {@eq key=profileRef.memberType value="provisional"} [{profileRef.memberType}] {/eq}
         </td>
         <td>
           {pledgedCapital}
@@ -66,10 +66,12 @@
     {/contributions}
   </table>
   <br>
-  <hr>
-  {#item}
-    <a href="/p/{_id}/delete">[delete]</a>
-  {/item}
+  {@eq key=user.profile.memberType value="full"}
+    <hr>
+    {#item}
+      <a href="/p/{_id}/delete">[delete]</a>
+    {/item}
+  {/eq}
 
 
 {/body}
