@@ -10,7 +10,8 @@
 var _ = require('lodash');
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
-var baseModel = require('./baseModel');
+//var baseModel = require('./baseModel');
+var BinbaseOrg = require('../models/binbaseOrg');  // need to make sure related models have been loaded for populate() fetches to work
 
 
 var attributes = {
@@ -22,8 +23,8 @@ var attributes = {
   , countryIso: String   // i.e. US
   , orgWebsite: String  // i.e. HTTP://WWW.ARTISANSBANK.COM
   , orgPhone: String   // i.e. 302-658-6881
-  , orgRef: {type: String, ref: 'Profile'}
-  , isRegulated: Boolean
+  , orgRef: {type: String, ref: 'BinbaseOrg'} //todo: migrate this to: type: Schema.Types.ObjectId
+  //, isRegulated: Boolean
 };
 
 var modelFactory = function () {

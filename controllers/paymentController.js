@@ -218,8 +218,12 @@ function fetchBinbase(req, res) {
   var bin = req.params.bin;
   var amount = req.params.amount;
   console.log('bin: ' + bin + ", amount: " + amount);
-  Binbase.findOne({bin: bin}).exec()
+  Binbase.findOne({bin: bin}).populate('orgRef').exec()//todo: factor out to binbase service
     .then(function (item) {
+      console.log('orgRef: ' + item.orgRef);
+      if (item.orgRef) {
+        item.isRegulated = item.orgRef.isRegulated;
+      }
       if (amount) {
         item.estimatedFee = calculateFee(item, amount);  // should clone first or nest result
       }
