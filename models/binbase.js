@@ -24,7 +24,7 @@ var attributes = {
   , orgWebsite: String  // i.e. HTTP://WWW.ARTISANSBANK.COM
   , orgPhone: String   // i.e. 302-658-6881
   , orgRef: {type: String, ref: 'BinbaseOrg'} //todo: migrate this to: type: Schema.Types.ObjectId
-  //, isRegulated: Boolean
+  , isRegulated: Boolean  //remove this once ref population fixed
 };
 
 var modelFactory = function () {
