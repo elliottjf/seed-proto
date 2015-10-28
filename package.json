@@ -5,10 +5,10 @@
   "author": "Joseph Elliott",
   "main": "index.js",
   "scripts": {
-    "start": "brunch watch --server",
-    "test": "grunt test",
-    "build": "grunt build",
-    "all": "npm run build && npm run test"
+    "start": "brunch watch --server"
+  , "test": "grunt test"
+  , "build": "brunch build"
+  , "all": "npm run build && npm run test"
   },
   "dependencies": {
     "JSONStream": "^1.0.6",
