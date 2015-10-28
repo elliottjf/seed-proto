@@ -7,6 +7,7 @@ var userLib = require('../lib/user');
 var helpers = require('../lib/helpers');
 var passthrough = helpers.passthrough;
 var curriedHandleError = _.curry(helpers.handleError);
+var Profile = require('../models/profile');
 
 var contributionController = require('./contributionController');
 var proposalController = require('./proposalController');
