@@ -3,14 +3,11 @@
 {<body}
   <h3>Vote Detail</h3>
 
-    {!id: {_id}<br/>!}
-    {!Proposal: {proposal}<br/>!}
-    {!<a href="/p/{proposalId}/view">Proposal</a>: {#proposal}{title}{/proposal}<br/>!}
-  {#proposalRef}
-    {>"proposal/_summary"/}
-  {/proposalRef}
-
   {#item}
+
+    {#proposalRef}
+      {>"proposal/_summary"/}
+    {/proposalRef}
 
     Supporter: {profileRef.name}<br/>
     Vote Rank: {voteRank}<br/>

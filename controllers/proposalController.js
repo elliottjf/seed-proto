@@ -168,14 +168,11 @@ function voteView(req, res) {
   //var model = {item: {id:1,title:"the first proposal"}};
   //res.render('proposal/view', model);
   var id = req.param('id');
-  var  model = {};
+  var model = {};
   Vote.findOne({_id: id}).populate('profileRef proposalRef').exec()
     .then(function(item) {
       model.item = item;
-      return Proposal.findOne({_id: item.proposalRef}); //~~~
-    })
-    .then(function(proposal) {
-      model.proposal = proposal;
+      //model.proposal = item.proposalRef;
       res.render('vote/view', model);
     })
     .catch( curriedHandleError(req, res) );
